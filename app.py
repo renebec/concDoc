@@ -1,6 +1,6 @@
 import pytz
 import os
-from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session, send_file, make_response
+from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session, send_file
 from flask import session as flask_session
 from flask_bcrypt import Bcrypt
 from gevent import monkey; monkey.patch_all()
@@ -13,7 +13,7 @@ from weasyprint import HTML, CSS
 import pymysql
 from werkzeug.utils import secure_filename
 
-from database import load_pg_from_db, load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2, is_preregistered
+from database import load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2, is_preregistered
 
 from sqlalchemy import text
 
@@ -124,8 +124,14 @@ def enviaractividad():
 
     if request.method == "POST":
         try:
-            actividad_num = request.form['actividad_num']
+            
             numero_control = request.form['numero_control']
+            plantel = request.form['plantel']
+            apellido_paterno = request.form['apellido_paterno']
+            apellido_materno = request.form['apellido_materno']
+            nombres = request.form['nombres']
+            claveOut = request.form['claveOut']
+            claveIn = request.form['claveIn']
             pdf_file = request.files['pdf_file']
 
             if not pdf_file or not pdf_file.filename.endswith('.pdf'):
@@ -142,18 +148,17 @@ def enviaractividad():
             if not user:
                 flash("Número de control no encontrado en la base de datos.", "danger")
                 return redirect(request.url)
-
+            numero_control = request.form['numero_control']
             apellido_paterno = user['apellido_paterno']
             apellido_materno = user['apellido_materno']
             nombres = user['nombres']
-            carrera = user['carrera']
-            semestre = user['semestre']
-            grupo = user['grupo']
+            claveIn = user['claveIn']
+            claveOut = user['claveOut']
             pdf_url = user['pdf_url']
 
 
             # Subir archivo a Cloudinary
-            filename = secure_filename(f"actividad {apellido_paterno}_{apellido_materno}_{nombres}_{semestre}_{grupo}_{actividad_num}.pdf")
+            filename = secure_filename(f"actividad {numero_control}_{plantel}{apellido_paterno}_{apellido_materno}_{nombres}_{claveIn}_{claveOut}.pdf")
             result = cloudinary.uploader.upload(
                 pdf_file,
                 resource_type='raw',
@@ -169,19 +174,19 @@ def enviaractividad():
             # Insertar en la tabla actividades_inoc
             insert_actividad(
                 session_db,
-                actividad_num,
+                numero_control,
+                plantel,
                 apellido_paterno,
                 apellido_materno,
                 nombres,
-                carrera,
-                semestre,
-                grupo,
+                claveIn,
+                clveOut,
                 pdf_url,
                 created_at
             )
             print("✅ Inserción en DB exitosa")
 
-            flash(f"Actividad {actividad_num} de {nombres} enviada correctamente.", "success")
+            flash(f"Registro de {numero_control} enviado correctamente.", "success")
             return redirect(url_for("hello_pm1"))
 
         except Exception as e:
