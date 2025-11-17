@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+<meta charset="utf-8" />
+<title>plan {{i.id}}</title>
+<meta name="plan" content="plan print" />
+<meta name="inocA" content="width=device-width, initial-scale=1.0" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const downloadBtn = document.getElementById('download-pdf');
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', () => {
+          const element = document.querySelector('.container'); // o document.body
+
+          const options = {
+            margin: 0.5,
+            filename: 'plan_{{ i.id }}.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+          };
+
+          html2pdf().set(options).from(element).save();
+        });
+      }
+    });
+  </script>
+
+
+<style>
+    table.grid-form {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 11px;
+        font-family: arial;
+    }
+
+    table.grid-form th,
+    table.grid-form td {
+        border: 1px solid black;
+        padding: 6px;
+        vertical-align: top;
+    }
+
+    .label-cell {
+        background-color: #f2f2f2;
+        font-weight: bold;
+
+    }
+
+    .label-cell2 {
+        background-color: #f2f2f2;
+        font-weight: bold;
+        text-align: center;
+
+    }
+    .label-cell3 {
+        background-color: #fFfFfF;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .value-cell2 {
+        white-space: pre-wrap;
+        word-break: break-word;
+        background-color: #fFfFfF;
+
+    }
+
+    .value-cell {
+    white-space: pre-wrap;
+    background-color: #e9e9e9;
+    word-break: break-word;
+
+    }
+
+    .wide-cell {
+        width: 50%;
+    }
+
+    table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+
+  }
+
+  td, th {
+    padding: 6px 10px;
+    border: 1px solid #000;
+    vertical-align: top;
+  }
+
+  /* Optional: prevent wrapping */
+  .nowrap {
+    white-space: nowrap;
+  }
+
+  pre {
+  font-family: arial;
+  white-space: pre-wrap;      
+  word-wrap: break-word;      
+  margin: 0;                  
+}
+
+
+  .page-break {
+    page-break-before: always; /* For PDF (WeasyPrint) */
+    break-before: page;        /* For browser support */
+    margin-top: 50px;          /* Optional spacing in browser */
+}
+</style>
+
+
+<body>
+  <div class="container">
+  <div class="page-break">
+
+<br><br>
+<h3> {{ i.parcial }} </h3><br>
+<h4>Planeación #{{ i.plan }}</h4>
+Planeación registrada el {{ i.created_at }}
+<table class="grid-form">
+  <thead>
+
+  </thead>
+    <tr>
+        <td class="label-cell"> <b>Plantel:</b> {{ i.plantel }}</td>
+        <td class="value-cell"> <b>Ciclo:</b> {{ i.ciclo }}</td>
+        <td class="label-cell"> <b>Periodo:</b> {{ i.periodo }}</td>
+
+        <td class="value-cell"> <b>Carrera:</b> {{ i.carrera }}</td>
+        <td class="label-cell"> <b>Semestre:</b> {{ i.semestre }}</td>
+        <td class="value-cell"> <b>Docente:</b> {{ i.docenteID }}</td>
+    </tr>
+
+    <tr>
+        <td class="value-cell" colspan="4"><b>Asignatura:</b> {{ i.asig }}</td>
+        <td colspan="1" class="label-cell"><b>Grupos:</b> {{ i.grupos }}</td>
+        <td colspan="1" class="value-cell"><b>Horas/Semana:</b> {{ i.horas_sem }}</td>
+    </tr>
+    <tr>
+        <td colspan="1" class="label-cell">Meta<br>educativa</td>
+        <td colspan="1" class="value-cell">
+            <pre style="margin: 0;">{{ i.meta }}</pre>
+        </td>
+        <td colspan="1" class="label-cell">Propósito<br>formativo</td>
+        <td colspan="1" class="value-cell">
+            <pre style="margin: 0;">{{ i.prop }}</pre>
+        </td>
+        <td colspan="1" class="label-cell">Contenidos</td>
+        <td colspan="1" class="value-cell">
+            <pre style="margin: 0;">{{ i.temas }}</pre>
+        </td>
+    </tr>
+    <tr>
+        <td  colspan="2"class="label-cell">Periodo en que se imparte:</td>
+        <td colspan="4" class="value-cell">{{ i.imparte }}</td>
+    </tr>
+    <tr>
+        <td  colspan="6"class="label-cell2">TRANSVERSALIDAD</td>
+  </tr>
+  <tr>
+        <td  colspan="6"class="label-cell2"><b>PEC (transdisciplinar):</b> {{ i.pec }}</td>
+  </tr>
+  <tr>
+        <td colspan="2" class="value-cell"><b>Asignatura 1:</b><br> {{ i.trAsigP1 }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br>
+            <pre style="margin: 0;">{{ i.trtemaP1 }}</pre>
+        </td>
+        <td colspan="2" class="value-cell"><b>Asignatura 2:</b><br> {{ i.trAsigP2 }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br> 
+            <pre style="margin: 0;">{{ i.trtemaP2 }}</pre>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="value-cell"><b>Asignatura 3:</b><br> {{ i.trAsigP3 }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br>
+            <pre style="margin: 0;">{{ i.trtemaP3 }}</pre>
+        </td>
+        <td colspan="2" class="value-cell"><b>Asignatura 4:</b><br> {{ i.trAsigP4 }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br>
+            <pre style="margin: 0;">{{ i.trtemaP4 }}</pre></td>
+        </td>
+    </tr>
+    <tr>
+        <td  colspan="6"class="label-cell2"><b>Multidisciplinar / Interdisciplinar:</b></td>
+  </tr>
+  <tr>
+        <td colspan="2" class="value-cell"><b>Asignatura 1:</b><br> {{ i.trAsigM1 }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br>
+            <pre style="margin: 0;">{{ i.trtemaM1 }}</pre>
+        </td>
+        <td colspan="2" class="value-cell"><b>Asignatura 2:</b><br> {{ i.trAsigM2 }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br> 
+            <pre style="margin: 0;">{{ i.trtemaM2 }}</pre>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="value-cell"><b>Asignatura 3:</b><br> {{ i.trAsigM3 }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br>
+            <pre style="margin: 0;">{{ i.trtemaM3 }}</pre>
+        </td>
+        <td colspan="2" class="value-cell"><b>Asignatura 4:</b><br> {{ i.trAsigM4 }}</td>
+        <td colspan="1" class="label-cell"><b>Contenidos:</b><br>
+            <pre style="margin: 0;">{{ i.trtemaM4 }}</pre>
+        </td>
+    </tr>
+    </table>
+
+    </div>
+    <div class="page-break">
+  <table class="grid-form">
+    <tr>
+        <td  colspan="6"class="label-cell2">SECUENCIA</td>
+  </tr>
+  <tr>
+        <td colspan="1" class="label-cell">Apertura</td>
+        <td colspan="1" class="value-cell">{{ i.apDur }}<br> minutos</td>
+        <td colspan="1" class="label-cell"><b>Evidencia:</b><br> 
+            <pre style="margin: 0;">{{ i.apEv }}</pre>
+        </td>
+        <td colspan="2" class="value-cell"><b>Instrumentos:</b><br>
+            <pre style="margin: 0;">{{ i.apIns }}</pre>
+        </td>
+        <td colspan="1" class="value-cell"><b>Ponderación (%):</b><br> {{ i.apPond }}</td>
+    </tr>
+    <tr>
+        <td colspan="1" class="label-cell">Actividades:</td>
+        <td colspan="5" class="value-cell">
+            <pre style="margin: 0;">{{ i.apAct }}</pre>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="1" class="label-cell">Desarrollo</td>
+        <td colspan="1" class="value-cell">{{ i.deDur }}<br> minutos
+        </td>
+        <td colspan="1" class="label-cell"><b>Evidencia:</b><br> 
+            <pre style="margin: 0;">{{ i.deEv }}</pre>
+        </td>>
+        <td colspan="2" class="value-cell"><b>Instrumentos:</b><br> 
+            <pre style="margin: 0;">{{ i.deIns }}</pre>
+        </td>
+        <td colspan="1" class="value-cell"><b>Ponderación (%):</b><br> {{ i.dePond }}</td>
+    </tr>
+    <tr>
+        <td colspan="1" class="label-cell">Actividades:</td>
+        <td colspan="5" class="value-cell">
+            <pre style="margin: 0;">{{ i.deAct }}</pre>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="1" class="label-cell">Cierre</td>
+        <td colspan="1" class="value-cell">{{ i.ciDur }}<br> minutos</td>
+        <td colspan="1" class="label-cell"><b>Evidencia:</b><br> 
+            <pre style="margin: 0;">{{ i.ciEv }}</pre>
+        </td>
+        <td colspan="2" class="value-cell"><b>Instrumentos:</b><br> 
+            <pre style="margin: 0;">{{ i.ciIns }}</pre>
+        </td>
+        <td colspan="1" class="value-cell"><b>Ponderación (%):</b><br> {{ i.ciPond }}</td>
+    </tr>
+    <tr>
+        <td colspan="1" class="label-cell">Actividades:</td>
+        <td colspan="5" class="value-cell">
+            <pre style="margin: 0;">{{ i.ciAct }}</pre>
+        </td>
+    </tr>
+      <tr>
+          <td colspan="1" class="label-cell">Poonderación en el parcial (%):</td>
+          <td colspan="5" class="value-cell">
+              <pre style="margin: 0;">{{ i.parPond }}</pre>
+          </td>
+      </tr>
+
+    </table>
+    </div>
+
+    <div class="page-break">
+  <table class="grid-form">
+    <tr>
+      <td style="height:20px;" class="value-cell" colspan="2"></td>
+      <td style="height:20px;" class="value-cell" colspan="2"></td>
+      <td style="height:20px;" class="value-cell" colspan="2"></td>
+    </tr>
+    <tr>
+      <td class="value-cell" colspan="2"><pre style="margin: 0;"><b>Materiales:</b><br>{{ i.materiales }}</pre></td>
+      <td class="value-cell" colspan="2"><pre style="margin: 0;"><b>Equipo:</b><br>{{ i.equipo }}</pre></td>
+      <td class="value-cell" colspan="2"><pre style="margin: 0;"><b>Fuentes:</b><br>{{ i.fuentes }}</pre></td>
+    </tr>
+    <tr>
+      <td style="height:20px;" class="value-cell" colspan="2"></td>
+      <td style="height:20px;" class="value-cell" colspan="2"></td>
+      <td style="height:20px;" class="value-cell" colspan="2"></td>
+    </tr>
+    <tr>
+      <td class="value-cell" colspan="2"><pre style="margin: 0;"><b>Elabora:</b><br>{{ i.elabora}}</pre></td>
+      <td class="value-cell" colspan="2"><pre style="margin: 0;"><b>Revisa:</b><br>{{ i.revisa }}</pre></td>
+      <td class="value-cell" colspan="2"><pre style="margin: 0;"><b>Avala:</b><br>{{ i.avala }}</pre></td>
+    </tr>
+    <tr>
+      <td class="value-cell" colspan="6"></td>
+    </tr>
+
+    </table>
+
+    </div>
+
+    <a href="{{ url_for('download_pdf', id=i['id']) }}" class="btn btn-success" target="_blank">
+      📄 Descargar PDF
+    </a>
+    <br><br>
+
+    <button id="download-pdf">📥 Descargar como PDF (html2pdf)</button>
+
+    <a href="{{ request.referrer }}">
+    <button type="button">Cerrar</button>
+    </a> 
+
+
+
+
+    <footer>
+        <p class="mt-3 mb-5 text-center">&copy; 2025 HRBC</p>
+        </footer>
+    <br><br><br><br><br>
+
+
+</div>
+
+</body>
+
+</html>
