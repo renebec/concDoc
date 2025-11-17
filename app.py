@@ -149,6 +149,7 @@ def enviaractividad():
                 flash("Número de control no encontrado en la base de datos.", "danger")
                 return redirect(request.url)
             numero_control = request.form['numero_control']
+            plantel = request.form['plantel']
             apellido_paterno = user['apellido_paterno']
             apellido_materno = user['apellido_materno']
             nombres = user['nombres']
