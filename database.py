@@ -107,7 +107,7 @@ def load_pgn_from_db(id):
 
 
 # Insert a new actividad record
-def insert_actividad(session, apellido_paterno, apellido_materno, nombres, pdf_url, created_at):
+def insert_actividad(session, numero_control, pantel, apellido_paterno, apellido_materno, nombres, claveOut, claveIn, pdf_url, created_at):
     created_at = datetime.now(pytz.timezone("America/Mexico_City"))
     try:
             query = text("""
