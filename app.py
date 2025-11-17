@@ -191,7 +191,7 @@ def enviaractividad():
 
         except Exception as e:
             print("❌ Error during submission:", e)
-            flash(f"Ocurrió un error al procesar la actividad {numero_control}.", "danger")
+            flash(f"Ocurrió un error al procesar el registro de {numero_control}.", "danger")
             return redirect(url_for('enviaractividad'))
 
     return render_template("enviaractividad.html", show_form=show_form)
