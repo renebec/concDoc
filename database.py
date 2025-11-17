@@ -107,48 +107,49 @@ def load_pgn_from_db(id):
 
 
 # Insert a new actividad record
-def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno, nombres, carrera, semestre, grupo, pdf_url, created_at):
+def insert_actividad(session, apellido_paterno, apellido_materno, nombres, pdf_url, created_at):
     created_at = datetime.now(pytz.timezone("America/Mexico_City"))
     try:
             query = text("""
-                INSERT INTO actividades (
-                    actividad_num,
+                INSERT INTO registros (
+                    numero_control,
+                    plantel,
                     apellido_paterno,
                     apellido_materno,
                     nombres,
-                    carrera,
-                    semestre,
-                    grupo,
+                    claveOut,
+                    claveIn,
                     pdf_url,
                     created_at
                 )
                 VALUES (
-                    :actividad_num,
+                    :numero_control,
+                    :plantel,
                     :apellido_paterno,
                     :apellido_materno,
                     :nombres,
-                    :carrera,
-                    :semestre,
-                    :grupo,
+                    :claveOut,
+                    :clveIn,
                     :pdf_url,
                     :created_at
                 )
             """)
             session.execute(query, {
-                "actividad_num": actividad_num,
+                "numero_control": numero_control,
+                "plantel": plantel,
                 "apellido_paterno": apellido_paterno,
                 "apellido_materno": apellido_materno,
                 "nombres": nombres,
-                "carrera": carrera,
-                "semestre": semestre,
-                "grupo": grupo,
+                "claveOut": claveOut,
+                "claveIn": claveIn,
                 "pdf_url": pdf_url,
                 "created_at": created_at
             })
             session.commit()  # Make sure to commit the transaction
+            print("✅ Registro insertado correctamente")
             session.close()
     except Exception as e:
-        print(f"DB ERROR Error al cargar la actividad, intente más tarde: {e}")
+        print(f"DB ERROR Error al cargar el registro, intente más tarde: {e}")
         session.rollback()  # Rollback in case of error
         return False
     return True
@@ -157,16 +158,7 @@ def insert_actividad(session, actividad_num, apellido_paterno, apellido_materno,
 
 
 def insert_plan(
-    session, plan, asig, meta, prop, temas, plantel, ciclo, periodo,
-    carrera, semestre, grupos, horas_sem, docenteID, imparte, parcial,
-    trAsigP1, trtemaP1, trAsigP2, trtemaP2, trAsigP3, trtemaP3,
-    trAsigP4, trtemaP4, trAsigM1, trtemaM1, trAsigM2, trtemaM2,
-    trAsigM3, trtemaM3, trAsigM4, trtemaM4,
-    apDur, apEv, apIns, apPond, apAct,
-    deDur, deEv, deIns, dePond, deAct,
-    ciDur, ciEv, ciIns, ciPond, ciAct,
-    materiales, equipo, fuentes,
-    elabora, revisa, avala, cve,
+    session, plan, docenteID, cve,
     created_at=None, pdf_url=None, parPond=None
 ):
     # Si no se proporciona created_at, se asigna la hora actual de México
@@ -176,54 +168,23 @@ def insert_plan(
 
     # Preparación de parámetros para INSERT y UPDATE
     params = {
-        "plan": plan, "asig": asig, "meta": meta, "prop": prop, "temas": temas,
-        "plantel": plantel, "ciclo": ciclo, "periodo": periodo, "carrera": carrera,
-        "semestre": semestre, "grupos": grupos, "horas_sem": horas_sem,
-        "docenteID": docenteID, "imparte": imparte, "parcial": parcial,
-        "trAsigP1": trAsigP1, "trtemaP1": trtemaP1, "trAsigP2": trAsigP2,
-        "trtemaP2": trtemaP2, "trAsigP3": trAsigP3, "trtemaP3": trtemaP3,
-        "trAsigP4": trAsigP4, "trtemaP4": trtemaP4,
-        "trAsigM1": trAsigM1, "trtemaM1": trtemaM1, "trAsigM2": trAsigM2,
-        "trtemaM2": trtemaM2, "trAsigM3": trAsigM3,
-        "trtemaM3": trtemaM3, "trAsigM4": trAsigM4, "trtemaM4": trtemaM4,
-        "apDur": apDur, "apEv": apEv, "apIns": apIns, "apPond": apPond,
-        "apAct": apAct,
-        "deDur": deDur, "deEv": deEv, "deIns": deIns, "dePond": dePond,
-        "deAct": deAct,
-        "ciDur": ciDur, "ciEv": ciEv, "ciIns": ciIns, "ciPond": ciPond,
-        "ciAct": ciAct,
-        "materiales": materiales, "equipo": equipo, "fuentes": fuentes,
-        "elabora": elabora, "revisa": revisa, "avala": avala, "cve": cve,
-        "created_at": created_at, "pdf_url": pdf_url, "parPond": parPond
+        "plan": plan,"plantel": plantel, 
+        "docenteID": docenteID, "cve": cve,
+        "created_at": created_at, "pdf_url": pdf_url
     }
 
     try:
         # Definición de la sentencia INSERT
         insert_query = text("""
             INSERT INTO mat1 (
-                plan, asig, prop, temas, plantel, ciclo, meta, periodo, carrera,
-                semestre, grupos, horas_sem, docenteID, imparte, parcial,
-                trAsigP1, trtemaP1, trAsigP2, trtemaP2, trAsigP3, trtemaP3,
-                trAsigP4, trtemaP4, trAsigM1, trtemaM1, trAsigM2, trtemaM2,
-                trAsigM3, trtemaM3, trAsigM4, trtemaM4,
-                apDur, apEv, apIns, apPond, apAct, deDur, deEv, deIns, dePond,
-                deAct, ciDur, ciEv, ciIns, ciPond, ciAct,
-                materiales, equipo, fuentes,
-                elabora, revisa, avala, cve, created_at, pdf_url, parPond
+                plan, docenteID, cve, created_at, pdf_url
             ) VALUES (
-                :plan, :asig, :prop, :temas, :plantel, :ciclo, :meta, :periodo, :carrera,
-                :semestre, :grupos, :horas_sem, :docenteID, :imparte, :parcial,
-                :trAsigP1, :trtemaP1, :trAsigP2, :trtemaP2, :trAsigP3, :trtemaP3,
-                :trAsigP4, :trtemaP4, :trAsigM1, :trtemaM1, :trAsigM2, :trtemaM2,
-                :trAsigM3, :trtemaM3, :trAsigM4, :trtemaM4, :apDur, :apEv, :apIns,
-                :apPond, :apAct, :deDur, :deEv, :deIns, :dePond, :deAct,
-                :ciDur, :ciEv, :ciIns, :ciPond, :ciAct, :materiales, :equipo,
-                :fuentes, :elabora, :revisa, :avala, :cve, :created_at, :pdf_url, :parPond
+                :plan, :docenteID, :cve, :created_at, :pdf_url
             )
         """)
         result = session.execute(insert_query, params)
         session.commit()
-        print("✅ Plan insertado correctamente")
+        print("✅ Registro insertado correctamente")
         return result.lastrowid
 
     except pymysql.err.IntegrityError as e:
@@ -232,25 +193,8 @@ def insert_plan(
 
             update_query = text("""
                 UPDATE mat1 SET
-                    plan = :plan, asig = :asig, meta = :meta, prop = :prop, temas = :temas,
-                    plantel = :plantel, ciclo = :ciclo, periodo = :periodo, carrera = :carrera,
-                    semestre = :semestre, grupos = :grupos, horas_sem = :horas_sem,
-                    docenteID = :docenteID, imparte = :imparte, parcial = :parcial,
-                    trAsigP1 = :trAsigP1, trtemaP1 = :trtemaP1, trAsigP2 = :trAsigP2,
-                    trtemaP2 = :trtemaP2, trAsigP3 = :trAsigP3, trtemaP3 = :trtemaP3,
-                    trAsigP4 = :trAsigP4, trtemaP4 = :trtemaP4,
-                    trAsigM1 = :trAsigM1, trtemaM1 = :trtemaM1,
-                    trAsigM2 = :trAsigM2, trtemaM2 = :trtemaM2,
-                    trAsigM3 = :trAsigM3, trtemaM3 = :trtemaM3,
-                    trAsigM4 = :trAsigM4, trtemaM4 = :trtemaM4,
-                    apDur = :apDur, apEv = :apEv, apIns = :apIns, apPond = :apPond,
-                    apAct = :apAct,
-                    deDur = :deDur, deEv = :deEv, deIns = :deIns, dePond = :dePond,
-                    deAct = :deAct,
-                    ciDur = :ciDur, ciEv = :ciEv, ciIns = :ciIns, ciPond = :ciPond,
-                    ciAct = :ciAct,
-                    materiales = :materiales, equipo = :equipo, fuentes = :fuentes,
-                    elabora = :elabora, revisa = :revisa, avala = :avala,
+                    plan = :plan,
+                    docenteID = :docenteID, 
                     created_at = :created_at, pdf_url = :pdf_url, parPond = : parPond
                 WHERE plan = :plan
             """)
@@ -294,7 +238,7 @@ def get_user_from_database(username):
 
 
 # Register a new user in the database
-def register_user(session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo, created_at):
+def register_user(session, numero_control, apellido_paterno, apellido_materno, nombres, username, password, created_at):
     # Check if username already exists
     existing_user = get_user_from_database(username)
     if existing_user:
@@ -304,8 +248,8 @@ def register_user(session, numero_control, apellido_paterno, apellido_materno, n
     password = password  # You might want to hash this password
     try:
         sql = text("""
-            INSERT INTO users ( numero_control, apellido_paterno, apellido_materno, nombres, username, password, carrera, semestre, grupo, created_at)
-            VALUES (:numero_control, :apellido_paterno, :apellido_materno, :nombres, :username, :password, :carrera, :semestre, :grupo, :created_at)
+            INSERT INTO users ( numero_control, apellido_paterno, apellido_materno, nombres, username, password, created_at)
+            VALUES (:numero_control, :apellido_paterno, :apellido_materno, :nombres, :username, :password, :created_at)
         """)
         session.execute(sql, {
             "numero_control": numero_control,
@@ -314,9 +258,6 @@ def register_user(session, numero_control, apellido_paterno, apellido_materno, n
             "nombres": nombres,
             "username": username,
             "password": password,
-            "carrera": carrera,
-            "semestre": semestre,
-            "grupo": grupo,
             "created_at": created_at
         })
         session.commit()  # Commit the transaction

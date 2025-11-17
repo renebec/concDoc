@@ -207,60 +207,11 @@ def plan_carga():
             print("📥 POST recibido")
             print("Campos en el formulario:", request.form.keys())
             plan = request.form['plan']
-            asig = request.form['asig']
-            meta = request.form['meta']
-            prop = request.form['prop']
-            temas = request.form['temas']
             plantel = request.form['plantel']
-            ciclo = request.form['ciclo']
-            periodo = request.form['periodo']
-            carrera = request.form['carrera']
-            semestre = request.form['semestre']
-            grupos = request.form['grupos'].replace(",", "").replace(" ", "")
-            horas_sem = request.form['horas_sem']
-            docenteID = request.form['docenteID']
-            imparte = request.form['imparte']
-            parcial = request.form['parcial']
-            trAsigP1 = request.form['trAsigP1']
-            trtemaP1 = request.form['trtemaP1']
-            trAsigP2 = request.form['trAsigP2']
-            trtemaP2 = request.form['trtemaP2']
-            trAsigP3 = request.form['trAsigP3']
-            trtemaP3 = request.form['trtemaP3']
-            trAsigP4 = request.form['trAsigP4']
-            trtemaP4 = request.form['trtemaP4']
-            trAsigM1 = request.form['trAsigM1']
-            trtemaM1 = request.form['trtemaM1']
-            trAsigM2 = request.form['trAsigM2']
-            trtemaM2 = request.form['trtemaM2']
-            trAsigM3 = request.form['trAsigM3']
-            trtemaM3 = request.form['trtemaM3']
-            trAsigM4 = request.form['trAsigM4']
-            trtemaM4 = request.form['trtemaM4']
-            apDur = request.form['apDur']
-            apEv = request.form['apEv']
-            apIns = request.form['apIns']
-            apPond = request.form['apPond']
-            apAct = request.form['apAct']
-            deDur = request.form['deDur']
-            deEv = request.form['deEv']
-            deIns = request.form['deIns']
-            dePond = request.form['dePond']
-            deAct = request.form['deAct']
-            ciDur = request.form['ciDur']
-            ciEv = request.form['ciEv']
-            ciIns = request.form['ciIns']
-            ciPond = request.form['ciPond']
-            ciAct = request.form['ciAct']
-            materiales = request.form['materiales']
-            equipo = request.form['equipo']
-            fuentes = request.form['fuentes']
-            elabora = request.form['elabora']
-            revisa = request.form['revisa']
-            avala = request.form['avala']
-            cve = f"{docenteID}_{ciclo}_{periodo}_{semestre}_{grupos}_{asig}_{plan}"
+            docenteID = request.form['numero_control']
+            cve = f"{docenteID}"
             pdf_file = request.files['pdf_file']
-            parPond = request.form['parPond']
+
 
 
 
@@ -302,66 +253,15 @@ def plan_carga():
             new_plan_id=insert_plan(
                 session_db,
                 plan,
-                asig,
-                meta,
-                prop,
-                temas,
-                plantel,
-                ciclo,
-                periodo,
-                carrera,
-                semestre,
-                grupos,
-                horas_sem,
                 docenteID, 
-                imparte,
-                parcial,
-                trAsigP1,
-                trtemaP1,
-                trAsigP2,
-                trtemaP2,
-                trAsigP3,
-                trtemaP3,
-                trAsigP4,
-                trtemaP4,
-                trAsigM1,
-                trtemaM1,
-                trAsigM2,
-                trtemaM2,
-                trAsigM3,
-                trtemaM3,
-                trAsigM4,
-                trtemaM4,
-                apDur,
-                apEv,
-                apIns,
-                apPond,
-                apAct,
-                deDur,
-                deEv,
-                deIns,
-                dePond,
-                deAct,
-                ciDur,
-                ciEv,
-                ciIns,
-                ciPond,
-                ciAct,
-                materiales,
-                equipo,
-                fuentes,
-                elabora,
-                revisa,
-                avala,
                 cve,
                 created_at,
-                pdf_url,
-                parPond
+                pdf_url
 
             )
             print("✅ Inserción en DB exitosa")
 
-            flash(f"Planeación {cve} de {docenteID} enviada correctamente.", "success")
+            flash(f"Registro {cve} de {docenteID} enviada correctamente.", "success")
             return redirect(url_for("show_plan", id=new_plan_id))
 
         except pymysql.err.IntegrityError as e:
@@ -369,7 +269,7 @@ def plan_carga():
                 with connection.cursor() as cursor:
                     cursor.execute(update_query, data)
                 connection.commit()
-                return "Plan updated successfully"
+                return "Registro updated successfully"
 
         except pymysql.MySQLError as e:
             print("❌ Error MySQL:", e)
@@ -439,9 +339,7 @@ def register():
 def register():
     if request.method == 'POST':
         user_type = request.form.get('user_type')
-        if user_type == 'A':
-            return redirect(url_for('register_alumno'))
-        elif user_type == 'D':
+        if user_type == 'D':
             return redirect(url_for('register_docente'))
         else:
             flash("Seleccione un tipo de usuario válido.")
@@ -450,7 +348,6 @@ def register():
 
 def handle_register_user(choice):
     template_map = {
-            "A": "register_alumno.html",
             "D": "register_docente.html"
         }
 
@@ -471,9 +368,6 @@ def handle_register_user(choice):
             nombres = request.form.get('nombres', '').strip()
             username = request.form.get('username', '').strip()
             #password = request.form.get('password', '')
-            carrera = request.form.get('carrera', '').strip()
-            semestre = request.form.get('semestre', '').strip()
-            grupo = request.form.get('grupo', '').strip()
 
 
             # Format check: validate user type based on numero_control
@@ -481,11 +375,11 @@ def handle_register_user(choice):
             fourth_char = numero_control[3] if len(numero_control) >= 4 else None
 
             if is_teacher_form and (not fourth_char or not fourth_char.isalpha()):
-                flash("El número de control No corresponde a un docente.", "danger")
+                flash("El RFC No corresponde a un docente.", "danger")
                 return render_template(template)
 
             if not is_teacher_form and fourth_char and fourth_char.isalpha():
-                flash("El número de control corresponde a un docente. Selecciona 'Docente' para registrarte.", "danger")
+                flash("El RFC corresponde a un docente. Selecciona un RFC de 'Docente' autorizado para registrarte.", "danger")
                 return render_template(template)
 
             if not is_preregistered(numero_control):
@@ -521,9 +415,6 @@ def handle_register_user(choice):
                 nombres,
                 username,
                 password,
-                carrera,
-                semestre,
-                grupo,
                 created_at
             )
 
@@ -546,11 +437,6 @@ def handle_register_user(choice):
     # GET method: show registration form
     return render_template(template)
 
-
-
-@app.route("/register/alumno", methods=["GET", "POST"])
-def register_alumno():
-    return handle_register_user(choice="A")
 
 @app.route("/register/docente", methods=["GET", "POST"])
 def register_docente():

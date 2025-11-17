@@ -141,26 +141,7 @@
     </div>
 <body>
     <header>
-        <div> 
-
-            <div width="100%">
-                <iframe width="320" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2842388/charts/3?bgcolor=%23FFC300&color=%23d62020&dynamic=true&results=300&title=Temperatura+%C2%B0C+%28Aguascalientes%29&type=line&yaxis=%C2%B0C"></iframe><br>
-                </div>
-
-  
  
-            <!--{% set item = (pg 
-            | selectattr('carrera', 'equalto', 'TA') 
-            | selectattr('semestre', 'equalto', 1) 
-            | first) %}-->
-            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
-
-            {% if item %} 
-            <h1 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
-                {{item['asig']}}
-            </h1>
-            {% endif %} 
-        </div>
     </header>
 
 
@@ -175,13 +156,6 @@
         <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
         </h2>
 
-        {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
-        {% if item is defined and item.meta | default(false) %}
-
-        <p class="lead">
-            {{ item.meta }}
-        </p>
-        {% endif %}
 <br><br>
         <p class="lead">   
             <i style="color:rgb(150,150,150);font-size:16px">M.C. Héctor René Becerril Cejudo</i><br><i style="color:rgb(150,150,150);font-size:16px">Aguascalientes, México.</i>
@@ -190,227 +164,17 @@
 
 
         {% if es_profesor %}
-        <a  href="{{ url_for('plan_carga') }}">
-              <button type="submit" class="btn btn-warning">Subir una planeación</button>
+        <a  href="{{ url_for('enviaractividad') }}">
+              <button type="submit" class="btn btn-warning">Hacer un registro</button>
         </a>
         {% endif %}
 
-
-        <div>            
-            {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 1') |                 first) %}
-
-            {% if item %}
-                <h2 class="text-center mt-4 mb-2" style="padding-                                           bottom:16px;color:rgb(100,100,100);">
-                    {{item['parcial']}}
-            </h2>
-            {% endif %}
-        </div>
-
-        <div>
-            {% for i in pg %}
-                {% if i['parcial'] == 'PARCIAL 1' %}
-                    {% include 'temasitem.html' %}
-                {% endif %}
-
-            {% endfor %}
-        </div>
-
-        <text class='partial-footer-total'>Parcial 1</text>
-        <div>
-
-            {% set ns = namespace(total=0) %}
-
-            {% for i in pg %}
-                {% if i['parcial'] == 'PARCIAL 1' %}
-                    {% set apertura = i['apPond'] | int %}
-                    {% set desarrollo = i['dePond'] | int %}
-
-                    {% set cierre = i['ciPond'] | int %}
-                    {% set parcial_sum = apertura + desarrollo + cierre %}
-                    {% set ns.total = ns.total + parcial_sum %}
-                {% endif %}
-            {% endfor %}
-
-            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}% </text>
-                <br>
-
-            {% set ts = namespace(total=0) %}
-
-            {% for i in pg %}
-                {% if i['parcial'] == 'PARCIAL 1' %}
-                    {% set tapertura = i['apDur'] | int %}
-                    {% set tdesarrollo = i['deDur'] | int %}
-
-                    {% set tcierre = i['ciDur'] | int %}
-                    {% set tparcial_sum = tapertura + tdesarrollo + tcierre %}
-                    {% set ts.total = ts.total + tparcial_sum %}
-                {% endif %}
-            {% endfor %}
-
-            <text class='partial-footer-total'>Total tiempo: {{ ts.total/60 }} hrs</text>
-        </div>   
-
-        <div>                     
-                {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 2') |                 first) %}
-
-                {% if item %}
-                <h2 class="text-center mt-4 mb-2" style="padding-                                       bottom:16px;color:rgb(100,100,100);">
-                    {{item['parcial']}}
-                </h2>
-                {% endif %}
-        </div>
-        <br>
-
-
-        <div>
-            {% for i in pg %}
-                {% if i['parcial'] == 'PARCIAL 2' %}
-                    {% include 'temasitem.html' %}
-                {% endif %}
-            {% endfor %}
-        </div>
-        <text class= 'partial-footer-total'>Parcial 2</text>
-        <div>
-            {% set ns = namespace(total=0) %}
-
-            {% for i in pg %}
-                {% if i['parcial'] == 'PARCIAL 2' %}
-                    {% set apertura = i['apPond'] | int %}
-                    {% set desarrollo = i['dePond'] | int %}
-
-                    {% set cierre = i['ciPond'] | int %}
-                    {% set parcial_sum = apertura + desarrollo + cierre %}
-                    {% set ns.total = ns.total + parcial_sum %}
-                {% endif %}
-            {% endfor %}
-
-            <text class= 'partial-footer-total'>Total ponderado: {{ ns.total }}% 
-            </text>        
-            <br>
-
-            {% set ns = namespace(total=0) %}
-
-            {% for i in pg %}
-                {% if i['parcial'] == 'PARCIAL 2' %}
-                    {% set tapertura = i['apDur'] | int %}
-                    {% set tdesarrollo = i['deDur'] | int %}
-
-                    {% set tcierre = i['ciDur'] | int %}
-                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
-                    {% set ns.total = ns.total + parcial_sum %}
-                {% endif %}
-            {% endfor %}
-
-            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }} hrs</text>
-        </div>
-
-        <div>                     
-        {% set item = (pg | selectattr('parcial', 'equalto', 'PARCIAL 3') | first)          %}
-                {% if item %}
-                <h2 class="text-center mt-4 mb-2" style="padding-bottom:16px;color:rgb(100,100,100);">
-                    {{item['parcial']}}
-                </h2>
-                {% endif %}
-        </div>
-        <br>
-
-        <div>
-            {% for i in pg %}
-                {% if i['parcial'] == 'PARCIAL 3' %}
-                    {% include 'temasitem.html' %}
-                {% endif %}
-            {% endfor %}
-        </div>
-        <text class= 'partial-footer-total'>Parcial 3</text>
-        <div>
-            {% set ns = namespace(total=0) %}
-
-            {% for i in pg %}
-                {% if i['parcial'] == 'Parcial 3' %}
-                    {% set apertura = i['apPond'] | int %}
-                    {% set desarrollo = i['dePond'] | int %}
-
-                    {% set cierre = i['ciPond'] | int %}
-                    {% set parcial_sum = apertura + desarrollo + cierre %}
-                    {% set ns.total = ns.total + parcial_sum %}
-                {% endif %}
-            {% endfor %}
-
-            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}%</text>             
-            <br>
-
-            {% set ns = namespace(total=0) %}
-
-            {% for i in pg %}
-                {% if i['parcial'] == 'PARCIAL 3' %}
-                    {% set tapertura = i['apDur'] | int %}
-                    {% set tdesarrollo = i['deDur'] | int %}
-
-                    {% set tcierre = i['ciDur'] | int %}
-                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
-                    {% set ns.total = ns.total + parcial_sum %}
-                {% endif %}
-            {% endfor %}
-
-            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }}                         hrs</text>
-        </div>
 
 
 
 <!--recursamientos -->
 
 
-        <div>                     
-            {% set item = (pg | selectattr('parcial', 'equalto', 'Recursamiento emergente') | first)          %}
-                    {% if item %}
-                    <h2 class="text-center mt-4 mb-2" style="padding-bottom:16px;color:rgb(100,100,100);">
-                        {{item['parcial']}}
-                    </h2>
-                    {% endif %}
-            </div>
-            <br>
-
-        <div>
-            {% for i in pg %}
-                {% if i['parcial'] == 'Recursamiento emergente' %}
-            
-                    {% include 'temasitem.html' %}
-                {% endif %}
-            {% endfor %}
-        </div>
-        <text class= 'partial-footer-total'>Recursamiento emergente</text>
-        <div>
-            {% set ns = namespace(total=0) %}
-
-            {% for i in pg %}
-                {% if i['parcial'] == 'Recursamiento emergente' %}
-                    {% set apertura = i['apPond'] | int %}
-                    {% set desarrollo = i['dePond'] | int %}
-
-                    {% set cierre = i['ciPond'] | int %}
-                    {% set parcial_sum = apertura + desarrollo + cierre %}
-                    {% set ns.total = ns.total + parcial_sum %}
-                {% endif %}
-            {% endfor %}
-
-            <text class='partial-footer-total'>Total ponderado: {{ ns.total }}%</text>             
-            <br>
-
-            {% set ns = namespace(total=0) %}
-
-            {% for i in pg %}
-                {% if i['parcial'] == 'Recursamiento emergente' %}
-                    {% set tapertura = i['apDur'] | int %}
-                    {% set tdesarrollo = i['deDur'] | int %}
-
-                    {% set tcierre = i['ciDur'] | int %}
-                    {% set parcial_sum = tapertura + tdesarrollo + tcierre %}
-                    {% set ns.total = ns.total + parcial_sum %}
-                {% endif %}
-            {% endfor %}
-
-            <text class='partial-footer-total'>Total tiempo: {{ ns.total/60 }}                         hrs</text>
-        </div>
 
 
 
