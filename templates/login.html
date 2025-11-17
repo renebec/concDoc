@@ -18,17 +18,27 @@
       width:100%;
       height: 240px;
       object-fit:cover;
-      object-position: 0px -500px;
+      object-position: 0px -200px;
   }
 
-  #banner2 {
+  .banner2 {
       display:block;
       margin-left:auto;
       margin-right:auto;
-      width:auto auto;
-      height: 200px;
+      width:100%;
+      height:240px;
       object-fit:contain;
       object-position: 0px -0px;
+  }
+
+  #avisos {
+      display:block;
+      margin-left:auto;
+      margin-right:auto;
+      width:100%;
+      height:400px;
+      object-fit:fill;
+      object-position: 0px 0px;
   }
 </style>
 
@@ -38,7 +48,7 @@
 
 
       <img id="banner" 
-      src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExZnpzNGhhNHlmcmJpeXNlNDYwd2l1aWw1bDdrY2k1bzFpZmNzbzFsZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l41m1BNECzmks56V2/giphy.gif">
+      src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExdGQ1dDF6dnRic2xvNndvNGZmcXIzbTVnaW90NTJkZHF3d2R3cHJoZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bG1oRM2Qp2kN3MTZCO/giphy.gif">
       <div class="row">
         <div class="row justify-content-center">
         <div class="col-2">
@@ -47,7 +57,59 @@
         </div>
       <h1 style="color:#1CD93B;">Centro de Bachillerato Tecnológico Agropecuario No.205</h1>
 
-      <div class="row justify-content-center">
+      <!--BOTON CONTACTO -->
+        <div style="text-align:start;">
+      Escríbenos tus preguntas y comentarios	&#128073;
+            <a class="btn btn-primary btn-lg"  type="button"  
+            href="mailto:ags.cbta205.subacad@dgetaycm.sems.gob.mx?cc=ags.cbta205.direccion@dgetaycm.sems.gob.mx&subject=Contacto&body=Nombre%3A%3Cescriba%20aqu%C3%AD%20su%20nombre%20completo%3E%0D%0A%0D%0AMensaje%3A%20%3Cescriba%20aqu%C3%AD%20su%20mensaje%3E%0D%0A%0D%0A">&#128231;</a>
+            <br><br><br>
+        </div>
+        <br><br>
+        <hr>
+
+        <div id="avisos">
+      <h1>Avisos</h1>
+      Noviembre<br>
+      Día de la Revolución Mexicana. Listos para celebrarlo con nuestra comunidad.<br>
+      <img height="300" src="https://barriozona.com/wp-content/uploads/2016/08/mural_revolucion_mexicana_muralismo.jpg">
+        </div>
+        <div>
+      <br><br>
+      <hr>
+      <br><br><br>
+        <h1>Nuestra oferta educativa</h1>
+        <p>
+      Nuestra modalidd bivalente (bachillerato + carrera técnica) cuenta
+      actualmente con tres opciones de en carreras técnicas:
+      <b>Agropecuario, Administración de Emprendimientos y además 
+      Soporte y Gestión de Tecnologías Informáticas.</b>
+        </p>
+
+        <a href="https://cosfac.sems.gob.mx/Programas_presenciales/2023/PROGRAMA_DE_ESTUDIOS_AGROPECUARIO.pdf" target="_blank">
+      <img width="300" src="https://arc-anglerfish-arc2-prod-abccolor.s3.amazonaws.com/public/KK7EFGZRNRC4XGT2YAJ6PQVRK4.jpg"><br>
+      Técnico Agropecuario
+      <br><br><br>
+        </a>
+
+        <a href="https://cosfac.sems.gob.mx/Programas_presenciales/2024/ADMINISTRACION_EMPRENDIMIENTOS1.pdf" target="_blank">
+      <img width="300" src="https://barrazacarlos.com/wp-content/uploads/2021/10/business-1-1536x1024.jpg"><br>
+      Administración de emprendimientos
+      <br><br><br>
+        </a>
+        <a href="https://cosfac.sems.gob.mx/Programas_presenciales/2025/SOPORTE_Y_GESTION_DE_TECNOLOGIAS_INFORMATICAS.pdf" target="_blank">
+      <img width="300" src="https://cbta41.edu.mx/wp-content/uploads/2022/01/mantenimiento-de-equipo-1024x576.jpg"><br>
+      Soporte y Gestión de Tecnologías Informáticas
+      <br><br><br>
+        </a>
+
+
+        </div>
+        <br><br>
+        <hr>
+        <br><br>
+     <div>
+     <h1>Material para docentes</h1>
+      <div class="row justify-content-between">
     <div class="col-4">
      <a href="https://registro.desarrolloprofesionaldocente.sems.gob.mx/" target="_blank">
        Cursos de formación docente<br><br>
@@ -69,7 +131,7 @@
     </div>
     </div>
     <br><br><br>
-    <div class="row justify-content-center">
+    <div class="row justify-content-between">
       <div class="col-4">
       <a href="https://innoversia.net/top-plataformas-educativas-profesores-guia-aula/" target="_blank">
         Herramientas digitales en 2025<br><br>
@@ -85,6 +147,7 @@
       </a>
     </div>
     </div>
+   </div>
 
 
     </div>
@@ -110,12 +173,12 @@
         <!--<form id="myform" method="POST" action="choice">-->
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
-                <input maxlenght="16" size="20" type="text" 
-                placeholder="enter your username" id="username" name="username" required>
+                <input maxlenght="20" size="20" type="text" 
+                id="username" name="username" required>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
-                <input type="password"  id="password" name="password" required>
+                <input type="password"  maxlenght="20" size="20" id="password" name="password" required>
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
             <br>
@@ -134,26 +197,46 @@
               <!--<a type="button" href="{{ url_for('register') }}">Haz click para registrarte:</a>-->
             </form>
             </section>
+            <br><br>
+
+            <hr>
 
 
                 <br><br>
-                <!--BOTON CONTACTO -->
-        <div style="text-align:center;">
-      Escríbenos tus preguntas y comentarios<br>
-      aquí<br>&#128071;<br>
-            <a class="btn btn-primary btn-lg"  type="button"  
-            href="mailto:mc.renebec@gmail.com?subject=Pregunta%20sobre%20el%20curso%20de%20Pensamiento%20Matemático%20I&body=Nombre%3A%20%3C%20escriba%20aqu%C3%AD%20su%20nombre%20completo%20%3E%0D%0ADatos%3A%20%3C%20escriba%20sus%20datos%20de%20Semestre%2C%20Grupo%20y%20Carrera%20%3E%0D%0APregunta%3A%20%3C%20escriba%20aqu%C3%AD%20su%20pregunta%20o%20comentario%20%3E%0D%0A">&#128231</a>
+
+
+             <h2>Clima y estado del tiempo<br></h2>
+             <br>
+             Consulta el pronóstico del tiempo en tu municipio desde el <a href="https://smn.conagua.gob.mx/es/pronostico-del-tiempo-por-municipios"
+             target="_blank">Servicio Meteorológico Nacional</a>
+             <br><br>
+             <h4>Datos en tiempo real</h4>
+       (Estación Sn Francisco de los Romo).<br>
+       Consulta nuestro datos climatológicos registrados cada media hora.
+
+        <div class="row justify-content-start">
+        <div class="col-12">
+          <iframe class="banner2" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2842388/charts/3?bgcolor=%23FFC300&color=%23d62020&dynamic=true&results=300&round=2&timescale=30&title=Temperatura+%C2%B0C&type=line&xaxis=Fecha+y+hora&yaxis=Temperatura"></iframe>
         </div>
-        <br><br>
-             Consulta la temperatura en tiempo real<br>
-             <div class="row">
-        <div class="row justify-content-between">
-        <div class="col-2">
-          <iframe id="banner2" width="450" height="260" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2842388/charts/3?bgcolor=%23FFC300&color=%23d62020&dynamic=true&results=300&title=Temperatura+%C2%B0C+%28Aguascalientes%29&type=line&yaxis=%C2%B0C"></iframe>
+        </div> 
+        <div class= "row justify-content-start">
+        <div class="col-12">
+          <iframe class="banner2" style="border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2842388/charts/4?bgcolor=%23DAF7A6&color=%23d62020&dynamic=true&results=300&round=2&timescale=30&title=%25+Humedad+del+aire&type=line&xaxis=Fecha+y+hora&yaxis=Humedad"></iframe>
         </div>
-        </div>   
+        </div> 
 
         </form>
+
+        <br><br>
+        <hr>
+
+      <div style="text-align:center;">
+      Correo de contacto<br>
+            <a class="btn btn-primary btn-lg"  type="button"  
+            href="mailto:ags.cbta205.subacad@dgetaycm.sems.gob.mx?cc=ags.cbta205.direccion@dgetaycm.sems.gob.mx&subject=Contacto&body=Nombre%3A%3Cescriba%20aqu%C3%AD%20su%20nombre%20completo%3E%0D%0A%0D%0AMensaje%3A%20%3Cescriba%20aqu%C3%AD%20su%20mensaje%3E%0D%0A%0D%0A">&#128231;</a>
+            <br><br><br>
+        </div>
+
 
 
     </div>
