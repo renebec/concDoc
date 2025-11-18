@@ -124,57 +124,57 @@ def enviaractividad():
 
     if request.method == "POST":
         try:
-            
             numero_control = request.form['numero_control']
+            plantel = request.form['plantel']
             pdf_file = request.files['pdf_file']
 
+            # Validar PDF
             if not pdf_file or not pdf_file.filename.endswith('.pdf'):
                 flash("Debes subir un archivo PDF válido menor a 25MB.", "danger")
                 return redirect(request.url)
 
-            pdf_file.seek(0, 2)  # mover puntero al final
+            # Validar tamaño del archivo
+            pdf_file.seek(0, 2)
             size = pdf_file.tell()
-            pdf_file.seek(0)  # regresar al inicio
+            pdf_file.seek(0)
 
-            if size > 25 * 1024 * 1024:  # 25 MB
+            if size > 25 * 1024 * 1024:
                 flash("El PDF debe ser menor o igual a 25MB.", "danger")
                 return redirect(request.url)
 
-            # Obtener la sesión de base de datos
+            # DB
             session_db = get_db_session()
 
-            # Obtener datos del usuario
             query = text('SELECT * FROM users2 WHERE numero_control = :numero_control')
             user = session_db.execute(query, {'numero_control': numero_control}).mappings().first()
 
             if not user:
-                flash("Número de control no encontrado en la base de datos.", "danger")
+                flash("Número de control no encontrado.", "danger")
                 return redirect(request.url)
-            numero_control = request.form['numero_control']
-            plantel = request.form['plantel']
+
             apellido_paterno = user['apellido_paterno']
             apellido_materno = user['apellido_materno']
             nombres = user['nombres']
             claveIn = user['claveIn']
             claveOut = user['claveOut']
-            pdf_url = user['pdf_url']
 
+            # Subir a Cloudinary
+            filename = f"registro_{numero_control}_{plantel}_{apellido_paterno}_{apellido_materno}_{nombres}_{claveIn}_{claveOut}"
+            filename = secure_filename(filename)
 
-            # Subir archivo a Cloudinary
-            filename = secure_filename(f"registro {numero_control}_{plantel}_{apellido_paterno}_{apellido_materno}_{nombres}_{claveIn}_{claveOut}.pdf")
             result = cloudinary.uploader.upload(
                 pdf_file,
                 resource_type='raw',
                 folder='actividades_pdf',
-                public_id=filename
+                public_id=filename,
             )
+
             pdf_url = result.get('secure_url')
             print("✅ Carga en Cloudinary exitosa")
 
-            # Establecer la fecha y hora actual en zona horaria de México
             created_at = datetime.now(pytz.timezone("America/Mexico_City"))
 
-            # Insertar en la tabla registros
+            # Insertar registro
             insert_actividad(
                 session_db,
                 numero_control,
@@ -187,14 +187,14 @@ def enviaractividad():
                 pdf_url,
                 created_at
             )
-            print("✅ Inserción en DB exitosa")
 
+            print("✅ Inserción en DB exitosa")
             flash(f"Registro de {nombres} enviado correctamente.", "success")
             return redirect(url_for("hello_pm1"))
 
         except Exception as e:
             print("❌ Error during submission:", e)
-            flash(f"Ocurrió un error al procesar el registro.", "danger")
+            flash("Ocurrió un error al procesar el registro.", "danger")
             return redirect(url_for('enviaractividad'))
 
     return render_template("enviaractividad.html", show_form=show_form)

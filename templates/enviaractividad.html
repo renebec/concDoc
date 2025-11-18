@@ -16,13 +16,24 @@
     <label>RFC:</label> <br>
     <input type="text" name="numero_control" placeholder="RFC" required> <br>
 
-
-    <label>Archivo PDF:</label> 
+      <div class="mb-3 row g-3">
+        <div class="col-sm-4">
+        <label for="plantel" class="form-label" style="font-weight:bold;">Plantel</label>
+          <select type="text" class="form-select" name="plantel" required>
+            <option selected>Seleccione...</option>
+            <option value="CBTA 30">CBTA 30</option>
+            <option value="CBTA 40">CBTA 40</option>
+            <option value="CBTA 61">CBTA 61</option>
+            <option value="CBTA 103">CBTA 103</option>
+            <option value="CBTA 204">CBTA 204</option>
+            <option value="CBTA 205">CBTA 205</option>
+          </select>
+        </div>
+      
+    <label>Archivo PDF (Max 25MB):</label> 
     <input type="file" name="pdf_file" accept="application/pdf" required><br><br> 
-    <button type="submit">Enviar</button>  
-      <a href="{{ request.referrer }}">
-          <button type="button">Cancelar</button>
-      </a>                     
+    <button type="submit" class="btn btn-primary">Enviar</button>
+    <a href="{{ request.referrer }}" class="btn btn-secondary">Cancelar</a>
   </form>
   </main>
 </body>
