@@ -40,7 +40,7 @@ cloudinary.config(
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
 app.permanent_session_lifetime = timedelta(minutes=60)
 
@@ -131,16 +131,16 @@ def enviaractividad():
 
             # Validar PDF
             if not pdf_file or not pdf_file.filename.endswith('.pdf'):
-                flash("Debes subir un archivo PDF válido menor a 20MB.", "danger")
-                return redirect(request.url)
+                flash("Debes subir un archivo PDF válido menor a 16MB.", "danger")
+                return redirect(url_for("hello_pm1"))
 
             # Validar tamaño del archivo
             pdf_file.seek(0, 2)
             size = pdf_file.tell()
             pdf_file.seek(0)
 
-            if size > 20 * 1024 * 1024:
-                flash("El PDF debe ser menor o igual a 20MB.", "danger")
+            if size > 16 * 1024 * 1024:
+                flash("El PDF debe ser menor o igual a 16MB.", "danger")
                 """return redirect(request.url)"""
                 return redirect(url_for("hello_pm1"))
 
@@ -152,7 +152,7 @@ def enviaractividad():
 
             if not user:
                 flash("Número de control no encontrado.", "danger")
-                return redirect(request.url)
+                return redirect(url_for("hello_pm1"))
 
             apellido_paterno = user['apellido_paterno']
             apellido_materno = user['apellido_materno']
@@ -197,7 +197,7 @@ def enviaractividad():
         except Exception as e:
             print("❌ Error during submission:", e)
             flash("Ocurrió un error al procesar el registro.", "danger")
-            return redirect(url_for('enviaractividad'))
+            return redirect(url_for("hello_pm1"))
 
     return render_template("enviaractividad.html", show_form=show_form)
 
@@ -578,13 +578,12 @@ def logout():
     return redirect(url_for('login'))
 
 
-
+"""
 
 if __name__ == '__main__':
     app.run(debug=True)
-
 """
+
 if __name__ == '__main__':
     http_server = WSGIServer(('0.0.0.0', 8080), app)
     http_server.serve_forever()
-    """
