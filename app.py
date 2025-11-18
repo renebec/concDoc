@@ -507,7 +507,7 @@ def login():
 
                     #  --- Lógica añadida para determinar tipo de usuario ---
                     school_id = user.get('numero_control', '')
-                    es_profesor = len(numero_control) >= 4 and numero_control[3].isalpha()
+                    es_profesor = len(school_id) >= 4 and school_id[3].isalpha()
                     flask_session['es_profesor'] = es_profesor
 
                     flash(f'{username} inició sesión correctamente', 'success')
