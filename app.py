@@ -126,16 +126,18 @@ def enviaractividad():
         try:
             
             numero_control = request.form['numero_control']
-            plantel = request.form['plantel']
-            apellido_paterno = request.form['apellido_paterno']
-            apellido_materno = request.form['apellido_materno']
-            nombres = request.form['nombres']
-            claveOut = request.form['claveOut']
-            claveIn = request.form['claveIn']
             pdf_file = request.files['pdf_file']
 
             if not pdf_file or not pdf_file.filename.endswith('.pdf'):
-                flash("Debes subir un archivo PDF válido menor a 20MB.", "danger")
+                flash("Debes subir un archivo PDF válido menor a 25MB.", "danger")
+                return redirect(request.url)
+
+            pdf_file.seek(0, 2)  # mover puntero al final
+            size = pdf_file.tell()
+            pdf_file.seek(0)  # regresar al inicio
+
+            if size > 25 * 1024 * 1024:  # 25 MB
+                flash("El PDF debe ser menor o igual a 25MB.", "danger")
                 return redirect(request.url)
 
             # Obtener la sesión de base de datos
@@ -159,7 +161,7 @@ def enviaractividad():
 
 
             # Subir archivo a Cloudinary
-            filename = secure_filename(f"registro {numero_control}_{plantel}{apellido_paterno}_{apellido_materno}_{nombres}_{claveIn}_{claveOut}.pdf")
+            filename = secure_filename(f"registro {numero_control}_{plantel}_{apellido_paterno}_{apellido_materno}_{nombres}_{claveIn}_{claveOut}.pdf")
             result = cloudinary.uploader.upload(
                 pdf_file,
                 resource_type='raw',
