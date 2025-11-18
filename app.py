@@ -160,7 +160,7 @@ def enviaractividad():
             claveOut = user['claveOut']
 
             # Subir a Cloudinary
-            filename = f"registro_{numero_control}_{plantel}_{apellido_paterno}_{apellido_materno}_{nombres}_{claveIn}_{claveOut}"
+            filename = f"registro_{numero_control}_{plantel}_{apellido_paterno}_{apellido_materno}_{nombres}_{claveIn}_{claveOut}.pdf"
             filename = secure_filename(filename)
 
             result = cloudinary.uploader.upload(
