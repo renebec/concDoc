@@ -107,7 +107,7 @@ def load_pgn_from_db(id):
 
 
 # Insert a new actividad record
-def insert_actividad(session, numero_control, pdf_url, created_at):
+def insert_actividad(session, numero_control, plantel, apellido_paterno, apellido_materno, nombres, claveOut, claveIn, pdf_url, created_at):
     created_at = datetime.now(pytz.timezone("America/Mexico_City"))
     try:
             query = text("""
@@ -225,7 +225,7 @@ def get_user_from_database(username):
     try:
         session = get_db_session()
         result = session.execute(
-            text("SELECT * FROM users WHERE username = :val"),
+            text("SELECT * FROM users2 WHERE username = :val"),
             {"val": username}
         )
         row = result.mappings().first()
