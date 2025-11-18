@@ -489,7 +489,7 @@ def login():
         try:
             # Connect to the database and fetch user data by username
             db_session = get_db_session()
-            query = text('SELECT * FROM users WHERE username = :username')
+            query = text('SELECT * FROM users2 WHERE username = :username')
             result = db_session.execute(query, {'username': username})
             user = result.mappings().first()
             db_session.close()
