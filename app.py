@@ -135,7 +135,7 @@ def enviaractividad():
             pdf_file = request.files['pdf_file']
 
             if not pdf_file or not pdf_file.filename.endswith('.pdf'):
-                flash("Debes subir un archivo PDF válido menor a 5MB.", "danger")
+                flash("Debes subir un archivo PDF válido menor a 20MB.", "danger")
                 return redirect(request.url)
 
             # Obtener la sesión de base de datos
