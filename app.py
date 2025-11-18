@@ -376,7 +376,7 @@ def handle_register_user(choice):
             claveOut = request.form.get('claveOut', '').strip()
             claveIn = request.form.get('claveIn', '').strip()
             username = request.form.get('username', '').strip()
-            #password = request.form.get('password', '')
+            password = request.form.get('password', '')
 
 
             # Format check: validate user type based on numero_control
