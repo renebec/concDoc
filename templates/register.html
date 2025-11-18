@@ -12,12 +12,51 @@
   
 
     <form method="POST" action="/register">
-      <input name="numero_control" placeholder="Número de control" required />
+
+        <input name="username" placeholder="Usuario" required />
+          <input name="password" type="password" placeholder="Contraseña" required />
+      <input name="numero_control" placeholder="RFC" required />
+
       <input name="apellido_paterno" placeholder="Apellido paterno" required />
       <input name="apellido_materno" placeholder="Apellido materno" required />
       <input name="nombres" placeholder="Nombres" required />
-      <input name="username" placeholder="Usuario" required />
-      <input name="password" type="password" placeholder="Contraseña" required />
+
+        
+
+        <div class="col-sm-4">
+              <label for="plantel" class="form-label" style="font-weight:bold;">Plantel</label>
+                <select type="text" class="form-select" name="plantel" required>
+                  <option selected>Seleccione...</option>
+                  <option value="CBTA 30">CBTA 30</option>
+                  <option value="CBTA 40">CBTA 40</option>
+                  <option value="CBTA 61">CBTA 61</option>
+                  <option value="CBTA 103">CBTA 103</option>
+                  <option value="CBTA 204">CBTA 204</option>
+                  <option value="CBTA 205">CBTA 205</option>
+                </select>
+              </div>
+
+        <div class="col-sm-12">
+            <label class="form-label" for="claveOut" style="font-weight:bold;">Clave actual</label>
+            <select type="text" class="form-select" name="claveOut" required>
+              <option selected>Seleccione...</option>
+              <option value="E4325">E4323</option>
+              <option value="E4325">E4325</option>
+              <option value="E4327">E4327</option>
+            </select>
+            </div>
+        
+        <div class="col-sm-12">
+            <label class="form-label" for="claveIn" style="font-weight:bold;">Clave a la que aspira</label>
+            <select type="text" class="form-select" name="claveIn" required>
+              <option selected>Seleccione...</option>
+              <option value="E4325">E4323</option>
+              <option value="E4325">E4325</option>
+              <option value="E4327">E4327</option>
+              <option value="E4329">E4329</option>
+            </select>
+        </div>
+      
       
       <button type="submit">Registrar</button>
     </form>

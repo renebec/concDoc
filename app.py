@@ -142,7 +142,7 @@ def enviaractividad():
             session_db = get_db_session()
 
             # Obtener datos del usuario
-            query = text('SELECT * FROM users WHERE numero_control = :numero_control')
+            query = text('SELECT * FROM users2 WHERE numero_control = :numero_control')
             user = session_db.execute(query, {'numero_control': numero_control}).mappings().first()
 
             if not user:
@@ -159,7 +159,7 @@ def enviaractividad():
 
 
             # Subir archivo a Cloudinary
-            filename = secure_filename(f"actividad {numero_control}_{plantel}{apellido_paterno}_{apellido_materno}_{nombres}_{claveIn}_{claveOut}.pdf")
+            filename = secure_filename(f"registro {numero_control}_{plantel}{apellido_paterno}_{apellido_materno}_{nombres}_{claveIn}_{claveOut}.pdf")
             result = cloudinary.uploader.upload(
                 pdf_file,
                 resource_type='raw',
@@ -369,9 +369,12 @@ def handle_register_user(choice):
         try:
             # Get form data (use .get() to avoid KeyError if field is missing)
             numero_control = request.form.get('numero_control', '').strip()
+            plantel = request.form.get('plantel', '').strip()
             apellido_paterno = request.form.get('apellido_paterno', '').strip()
             apellido_materno = request.form.get('apellido_materno', '').strip()
             nombres = request.form.get('nombres', '').strip()
+            claveOut = request.form.get('claveOut', '').strip()
+            claveIn = request.form.get('claveIn', '').strip()
             username = request.form.get('username', '').strip()
             #password = request.form.get('password', '')
 
@@ -405,7 +408,7 @@ def handle_register_user(choice):
 
             # ✅ Check if the username is already taken
             existing_user = db_session.execute(
-                text("SELECT 1 FROM users WHERE username = :username"),
+                text("SELECT 1 FROM users2 WHERE username = :username"),
                 {"username": username}
             ).fetchone()
 
@@ -416,9 +419,12 @@ def handle_register_user(choice):
             success = register_user(
                 db_session,
                 numero_control,
+                plantel,
                 apellido_paterno,
                 apellido_materno,
                 nombres,
+                claveOut,
+                claveIn,
                 username,
                 password,
                 created_at
