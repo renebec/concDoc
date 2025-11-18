@@ -187,12 +187,12 @@ def enviaractividad():
             )
             print("✅ Inserción en DB exitosa")
 
-            flash(f"Registro de {nombresl} enviado correctamente.", "success")
+            flash(f"Registro de {nombres} enviado correctamente.", "success")
             return redirect(url_for("hello_pm1"))
 
         except Exception as e:
             print("❌ Error during submission:", e)
-            flash(f"Ocurrió un error al procesar el registro de {numero_control}.", "danger")
+            flash(f"Ocurrió un error al procesar el registro de {nombres}.", "danger")
             return redirect(url_for('enviaractividad'))
 
     return render_template("enviaractividad.html", show_form=show_form)
