@@ -387,7 +387,7 @@ def handle_register_user(choice):
 
             # Format check: validate user type based on numero_control
             is_teacher_form = (choice == "D")
-            fourth_char = numero_control[3] if len(numero_control) >= 4 else None
+            fourth_char = numero_control[2] if len(numero_control) >= 3 else None
 
             if is_teacher_form and (not fourth_char or not fourth_char.isalpha()):
                 flash("El número de control No corresponde a un docente.", "danger")
@@ -507,7 +507,7 @@ def login():
 
                     #  --- Lógica añadida para determinar tipo de usuario ---
                     school_id = user.get('numero_control', '')
-                    es_profesor = len(school_id) >= 4 and school_id[5].isalpha()
+                    es_profesor = len(numero_control) >= 4 and numero_control[3].isalpha()
                     flask_session['es_profesor'] = es_profesor
 
                     flash(f'{username} inició sesión correctamente', 'success')
