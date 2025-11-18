@@ -129,7 +129,7 @@ def insert_actividad(session, numero_control, plantel, apellido_paterno, apellid
                     :apellido_materno,
                     :nombres,
                     :claveOut,
-                    :clveIn,
+                    :claveIn,
                     :pdf_url,
                     :created_at
                 )
