@@ -141,7 +141,8 @@ def enviaractividad():
 
             if size > 25 * 1024 * 1024:
                 flash("El PDF debe ser menor o igual a 25MB.", "danger")
-                return redirect(request.url)
+                """return redirect(request.url)"""
+                return redirect(url_for("hello_pm1"))
 
             # DB
             session_db = get_db_session()
