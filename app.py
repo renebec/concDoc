@@ -172,7 +172,7 @@ def enviaractividad():
             # Establecer la fecha y hora actual en zona horaria de México
             created_at = datetime.now(pytz.timezone("America/Mexico_City"))
 
-            # Insertar en la tabla actividades_inoc
+            # Insertar en la tabla registros
             insert_actividad(
                 session_db,
                 numero_control,
@@ -181,13 +181,13 @@ def enviaractividad():
                 apellido_materno,
                 nombres,
                 claveIn,
-                clveOut,
+                claveOut,
                 pdf_url,
                 created_at
             )
             print("✅ Inserción en DB exitosa")
 
-            flash(f"Registro de {numero_control} enviado correctamente.", "success")
+            flash(f"Registro de {nombresl} enviado correctamente.", "success")
             return redirect(url_for("hello_pm1"))
 
         except Exception as e:
