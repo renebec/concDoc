@@ -341,11 +341,15 @@ def register():
     return render_template("register.html", choice=choice)
 """
 
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
         user_type = request.form.get('user_type')
-        if user_type == 'D':
+        if user_type == 'A':
+            return redirect(url_for('register_alumno'))
+        elif user_type == 'D':
             return redirect(url_for('register_docente'))
         else:
             flash("Seleccione un tipo de usuario válido.")
@@ -354,6 +358,7 @@ def register():
 
 def handle_register_user(choice):
     template_map = {
+            "A": "register_alumno.html",
             "D": "register_docente.html"
         }
 
@@ -376,7 +381,8 @@ def handle_register_user(choice):
             claveOut = request.form.get('claveOut', '').strip()
             claveIn = request.form.get('claveIn', '').strip()
             username = request.form.get('username', '').strip()
-            password = request.form.get('password', '')
+            #password = request.form.get('password', '')
+            
 
 
             # Format check: validate user type based on numero_control
@@ -384,11 +390,11 @@ def handle_register_user(choice):
             fourth_char = numero_control[3] if len(numero_control) >= 4 else None
 
             if is_teacher_form and (not fourth_char or not fourth_char.isalpha()):
-                flash("El RFC No corresponde a un docente.", "danger")
+                flash("El número de control No corresponde a un docente.", "danger")
                 return render_template(template)
 
             if not is_teacher_form and fourth_char and fourth_char.isalpha():
-                flash("El RFC corresponde a un docente. Selecciona un RFC de 'Docente' autorizado para registrarte.", "danger")
+                flash("El número de control corresponde a un docente. Selecciona 'Docente' para registrarte.", "danger")
                 return render_template(template)
 
             if not is_preregistered(numero_control):
@@ -431,7 +437,7 @@ def handle_register_user(choice):
             )
 
             if not success:
-                flash("Error. Por favor, intente de nuevo.", "danger")
+                flash("Ese nombre de usuario ya está registrado. Por favor, elige otro.", "danger")
                 return render_template(template)
 
             flash(f"Registro exitoso para {nombres}!", "success")
@@ -450,9 +456,15 @@ def handle_register_user(choice):
     return render_template(template)
 
 
+
+@app.route("/register/alumno", methods=["GET", "POST"])
+def register_alumno():
+    return handle_register_user(choice="A")
+
 @app.route("/register/docente", methods=["GET", "POST"])
 def register_docente():
     return handle_register_user(choice="D")
+
 
 
 
