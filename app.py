@@ -40,7 +40,7 @@ cloudinary.config(
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-app.config['MAX_CONTENT_LENGTH'] = 14 * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
 app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
 app.permanent_session_lifetime = timedelta(minutes=60)
 
@@ -131,7 +131,7 @@ def enviaractividad():
 
             # Validar PDF
             if not pdf_file or not pdf_file.filename.endswith('.pdf'):
-                flash("Debes subir un archivo PDF válido menor a 14MB.", "danger")
+                flash("Debes subir un archivo PDF válido menor a 10 MB.", "danger")
                 return redirect(url_for("hello_pm1"))
 
             # Validar tamaño del archivo
@@ -139,8 +139,8 @@ def enviaractividad():
             size = pdf_file.tell()
             pdf_file.seek(0)
 
-            if size > 14 * 1024 * 1024:
-                flash("El PDF debe ser menor o igual a 14MB.", "danger")
+            if size > 10 * 1024 * 1024:
+                flash("El PDF debe ser menor o igual a 10MB.", "danger")
                 """return redirect(request.url)"""
                 return redirect(url_for("hello_pm1"))
 
