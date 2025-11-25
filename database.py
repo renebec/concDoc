@@ -159,25 +159,25 @@ def load_user_pdfs(session_db, numero_control):
         SELECT pdf_url, created_at, numero_control
         FROM actividades
         WHERE numero_control = :numero_control
-        ORDER BY created_at DESC
+        ORDER BY created_at DESC, numero_control DESC
     """)
-    return session_db.execute(query, {"numero_control": numero_control}).mappings().all()
+    result = session_db.execute(query, {"numero_control": numero_control}).fetchall()
+    # Convertir cada fila a dict para que Jinja pueda acceder con pdf.pdf_url etc.
+    pdfs = [dict(r) for r in result]
+    return pdfs
+
+
 
 
 def load_all_pdfs(session_db):
     query = text("""
-        SELECT 
-            pdf_url,
-            created_at,
-            numero_control,
-            apellido_paterno,
-            apellido_materno,
-            nombres
+        SELECT pdf_url, created_at, numero_control
         FROM actividades
-        ORDER BY created_at DESC
+        ORDER BY created_at DESC, numero_control DESC
     """)
-    return session_db.execute(query)
-    return [dict(row) for row in result]
+    result = session_db.execute(query).fetchall()
+    pdfs = [dict(r) for r in result]
+    return pdfs
 
 
 
