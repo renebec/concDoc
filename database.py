@@ -154,7 +154,15 @@ def insert_actividad(session, numero_control, plantel, apellido_paterno, apellid
         return False
     return True
 
-
+def load_user_pdfs(session_db, numero_control):
+    query = text(
+        SELECT pdf_url, created_at
+        FROM actividades
+        WHERE numero_control = :numero_control
+        ORDER BY created_at DESC
+    )
+    result = session_db.execute(query, {"numero_control": numero_control})
+    return result.mappings().all()
 
 
 def insert_plan(

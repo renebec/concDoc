@@ -167,7 +167,32 @@
         </a>
         {% endif %}
 
+        {% if is_master %}
+            <h3>Todos los PDFs cargados</h3>
+        {% else %}
+            <h3>Tus PDFs</h3>
+        {% endif %}
 
+        {% if pdfs %}
+        <ul>
+            {% for pdf in pdfs %}
+                <li>
+                    {% if is_master %}
+                        <strong>{{ pdf.numero_control }}</strong> —
+                    {% endif %}
+                    <a href="{{ pdf.pdf_url }}" target="_blank">
+                        PDF {{ loop.index }} — {{ pdf.created_at }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+            {% if is_master %}
+                <p>No hay ningún PDF cargado todavía.</p>
+            {% else %}
+                <p>Todavía no has subido PDFs.</p>
+            {% endif %}
+        {% endif %}
 
 
 <!--recursamientos -->

@@ -45,19 +45,54 @@ app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
 app.permanent_session_lifetime = timedelta(minutes=60)
 
 
+
+
 @app.route("/")
 def hello_pm1():
-        if not check_session_timeout():
-            #flash('Su sesión ha expirado. Por favor, inicie sesión nuevamente.', 'danger')
-            return redirect(url_for('login'))
+    if not check_session_timeout():
+        return redirect(url_for('login'))
 
-        pg = load_pg_from_db2()
+    pg = load_pg_from_db2()
+    db = get_db_session()
 
-        es_profesor = flask_session.get('es_profesor', False)
-        username = flask_session.get('username', 'Invitado')
+    username = flask_session.get('username', 'Invitado')
+    es_profesor = flask_session.get('es_profesor', False)
+    is_master = flask_session.get('is_master', False)
 
+    # Default: user-specific PDFs
+    pdfs = []
 
-        return render_template('home.html', es_profesor=es_profesor , pg=pg, username=username)
+    if is_master:
+        # 👉 MASTER USER: load ALL PDFs
+        query = text("""
+            SELECT numero_control, pdf_url, created_at
+            FROM actividades
+            ORDER BY created_at DESC
+        """)
+        pdfs = db.execute(query).mappings().all()
+
+    else:
+        # 👉 NORMAL USER: load only THEIR PDFs
+        query_user = text("SELECT numero_control FROM users2 WHERE username = :username")
+        user = db.execute(query_user, {"username": username}).mappings().first()
+
+        if user:
+            query_pdfs = text("""
+                SELECT pdf_url, created_at
+                FROM actividades
+                WHERE numero_control = :numero_control
+                ORDER BY created_at DESC
+            """)
+            pdfs = db.execute(query_pdfs, {"numero_control": user["numero_control"]}).mappings().all()
+
+    db.close()
+
+    return render_template('home.html',
+                           es_profesor=es_profesor,
+                           is_master=is_master,
+                           username=username,
+                           pg=pg,
+                           pdfs=pdfs)
 
 
 
@@ -483,15 +518,13 @@ def edit_plan(plan_id):
     return render_template("edit_plan.html", plan=plan)
 
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        print(f"Trying login for user: {username}")
+
         try:
-            # Connect to the database and fetch user data by username
             db_session = get_db_session()
             query = text('SELECT * FROM users2 WHERE username = :username')
             result = db_session.execute(query, {'username': username})
@@ -499,34 +532,39 @@ def login():
             db_session.close()
 
             if user:
-                # ✅ Secure password check using Bcrypt
+                # Verificar password
                 if bcrypt.check_password_hash(user['password'], password):
-                    print("User found:", user)
-                # Check if password matches (you should hash passwords in production)
-                #if user['password'] == password:
-                #    print("Password correct")
+
                     flask_session.permanent = True
                     flask_session['username'] = username
                     flask_session['last_activity'] = datetime.now().isoformat()
 
-                    #  --- Lógica añadida para determinar tipo de usuario ---
+                    # ------ DETECTAR DOCENTE ------
                     school_id = user.get('numero_control', '')
                     es_profesor = len(school_id) >= 4 and school_id[3].isalpha()
                     flask_session['es_profesor'] = es_profesor
 
+                    # ------ DETECTAR MASTER ------
+                    # Campo en DB: is_master (0 o 1)
+                    is_master = user.get('is_master', 0) == 1
+                    flask_session['is_master'] = is_master
+
                     flash(f'{username} inició sesión correctamente', 'success')
-                    return redirect(url_for('hello_pm1'))  # Redirect on success
+
+                    # 👉 Todos (incluyendo master) van a la misma home
+                    return redirect(url_for('hello_pm1'))
+
                 else:
-                    print("Password incorrect")
-                    flash('Contraseña equivocada. Intente de nuevo.', 'danger')
+                    flash('Contraseña incorrecta.', 'danger')
                     return render_template('login.html')
+
             else:
-                flash('Nombre de usuario no existe. Intente de nuevo.', 'danger')
+                flash('Usuario no encontrado.', 'danger')
                 return render_template('login.html')
 
         except Exception as e:
-            print("Exception during login:", e)
-            flash('Ocurrió un error. Intente más tarde.', 'danger')
+            print("❌ Error en login:", e)
+            flash('Error interno. Intenta más tarde.', 'danger')
             return render_template('login.html')
 
     return render_template('login.html')
