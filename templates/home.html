@@ -177,11 +177,9 @@
         <ul>
         {% for pdf in pdfs %}
             <li>
-                {% if is_master %}
-                    {{ pdf.apellido_paterno }} {{ pdf.apellido_materno }}, {{ pdf.nombres }} -
-                {% endif %}
+
                 <a href="{{ pdf.pdf_url }}" target="_blank">Ver PDF</a>
-                (Subido: {{ pdf.numero_control }})
+                (Subido: {{ pdf.created_at }} - {{ pdf.numero_control }})
             </li>
         {% endfor %}
         </ul>
