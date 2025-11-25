@@ -176,7 +176,8 @@ def load_all_pdfs(session_db):
         FROM actividades
         ORDER BY created_at DESC
     """)
-    return session_db.execute(query).mappings().all()
+    return session_db.execute(query)
+    return [dict(row) for row in result]
 
 
 
