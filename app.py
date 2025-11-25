@@ -70,14 +70,15 @@ def hello_pm1():
     if is_master:
         pdfs = load_all_pdfs(session_db)
     else:
-        pdfs = load_user_pdfs(session_db, numero_control)
+        pdfs = load_user_pdfs(session_db, session['numero_control'])
 
     # 5. Renderizar home.html con las variables necesarias
     return render_template(
         "home.html",
         es_profesor=True,       # si lo necesitas
         is_master=is_master,    # ✔ para el HTML
-        username=username,       # opcional
+        username=username,
+        numero_control,
         pdfs=pdfs               # ✔ lista de PDFs
     )
 
