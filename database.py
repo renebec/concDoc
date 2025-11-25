@@ -154,6 +154,8 @@ def insert_actividad(session, numero_control, plantel, apellido_paterno, apellid
         return False
     return True
 
+
+
 def load_all_pdfs(session_db):
     query = text("""
         SELECT pdf_url, created_at, numero_control
@@ -163,6 +165,8 @@ def load_all_pdfs(session_db):
     result = session_db.execute(query).mappings().all()  # <-- mapeo
     pdfs = [dict(r) for r in result]  # Cada dict tiene keys: 'pdf_url', 'created_at', 'numero_control'
     return pdfs
+
+
 
 def load_user_pdfs(session_db, numero_control):
     query = text("""
