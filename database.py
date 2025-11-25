@@ -160,8 +160,8 @@ def load_all_pdfs(session_db):
         FROM actividades
         ORDER BY created_at DESC, numero_control DESC
     """)
-    result = session_db.execute(query).mappings().all()  # <-- aquí
-    pdfs = [dict(r) for r in result]  # ya es seguro convertir a dict
+    result = session_db.execute(query).mappings().all()  # <-- mapeo
+    pdfs = [dict(r) for r in result]  # Cada dict tiene keys: 'pdf_url', 'created_at', 'numero_control'
     return pdfs
 
 def load_user_pdfs(session_db, numero_control):
