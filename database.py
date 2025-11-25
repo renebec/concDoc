@@ -159,7 +159,7 @@ def insert_actividad(session, numero_control, plantel, apellido_paterno, apellid
 def load_all_pdfs(session_db):
     query = text("""
         SELECT pdf_url, created_at, numero_control
-        FROM actividades
+        FROM registros
         ORDER BY created_at DESC, numero_control DESC
     """)
     result = session_db.execute(query).mappings().all()  # <-- mapeo
@@ -171,7 +171,7 @@ def load_all_pdfs(session_db):
 def load_user_pdfs(session_db, numero_control):
     query = text("""
         SELECT pdf_url, created_at, numero_control
-        FROM actividades
+        FROM registros
         WHERE numero_control = :numero_control
         ORDER BY created_at DESC, numero_control DESC
     """)
