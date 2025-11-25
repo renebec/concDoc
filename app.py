@@ -46,54 +46,40 @@ app.permanent_session_lifetime = timedelta(minutes=60)
 
 
 
-
 @app.route("/")
 def hello_pm1():
+
+    # 1. Validar expiración de sesión
     if not check_session_timeout():
-        return redirect(url_for('login'))
+        flash("Su sesión ha expirado. Por favor, inicie sesión nuevamente.", "danger")
+        return redirect(url_for("login"))
 
-    pg = load_pg_from_db2()
-    db = get_db_session()
+    # 2. Obtener datos del usuario desde session
+    username = session.get("username")
+    numero_control = session.get("numero_control")
+    is_master = session.get("is_master", False)
 
-    username = flask_session.get('username', 'Invitado')
-    es_profesor = flask_session.get('es_profesor', False)
-    is_master = flask_session.get('is_master', False)
+    if not username:
+        flash("Debe iniciar sesión.", "danger")
+        return redirect(url_for("login"))
 
-    # Default: user-specific PDFs
-    pdfs = []
+    # 3. Conexión a DB
+    session_db = get_db_session()
 
+    # 4. Cargar PDFs dependiendo del tipo de usuario
     if is_master:
-        # 👉 MASTER USER: load ALL PDFs
-        query = text("""
-            SELECT numero_control, pdf_url, created_at
-            FROM actividades
-            ORDER BY created_at DESC
-        """)
-        pdfs = db.execute(query).mappings().all()
-
+        pdfs = load_all_pdfs(session_db)
     else:
-        # 👉 NORMAL USER: load only THEIR PDFs
-        query_user = text("SELECT numero_control FROM users2 WHERE username = :username")
-        user = db.execute(query_user, {"username": username}).mappings().first()
+        pdfs = load_user_pdfs(session_db, numero_control)
 
-        if user:
-            query_pdfs = text("""
-                SELECT pdf_url, created_at
-                FROM actividades
-                WHERE numero_control = :numero_control
-                ORDER BY created_at DESC
-            """)
-            pdfs = db.execute(query_pdfs, {"numero_control": user["numero_control"]}).mappings().all()
-
-    db.close()
-
-    return render_template('home.html',
-                           es_profesor=es_profesor,
-                           is_master=is_master,
-                           username=username,
-                           pg=pg,
-                           pdfs=pdfs)
-
+    # 5. Renderizar home.html con las variables necesarias
+    return render_template(
+        "home.html",
+        es_profesor=True,       # si lo necesitas
+        is_master=is_master,    # ✔ para el HTML
+        username=username,       # opcional
+        pdfs=pdfs               # ✔ lista de PDFs
+    )
 
 
 
