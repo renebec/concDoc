@@ -1,54 +1,5 @@
-import pytz
-import os
-from flask import Flask, render_template, jsonify, request, redirect, url_for, flash, session, send_file
-from flask import session as flask_session
-from flask_bcrypt import Bcrypt
-from gevent import monkey; monkey.patch_all()       
-from gevent.pywsgi import WSGIServer
-from datetime import datetime, timedelta
-import cloudinary
-import cloudinary.uploader
-import tempfile
-from weasyprint import HTML, CSS
-import pymysql
-from werkzeug.utils import secure_filename
-
-from database import load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2, is_preregistered, load_all_pdfs, load_user_pdfs
-
-from sqlalchemy import text
-
-created_at = datetime.now()
-
-def check_session_timeout():
-    if 'username' in session:
-        if 'last_activity' in session:
-            last_activity = datetime.fromisoformat(session['last_activity'])
-            if datetime.now() - last_activity > timedelta(minutes=60):
-                session.clear()
-                return False
-        session['last_activity'] = datetime.now().isoformat()
-        return True
-    return False
-
-"""
-cloudinary.config( 
-  cloud_name = os.environ.get("CLOUDINARY_CLOUD_NAME"), 
-  api_key = os.environ.get("CLOUDINARY_API_KEY"), 
-  api_secret = os.environ.get("CLOUDINARY_API_SECRET")
-)
-"""
-app = Flask(__name__)
-bcrypt = Bcrypt(app)
-app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024
-app.secret_key = os.environ.get("SECRET_KEY", "dev-secret")
-app.permanent_session_lifetime = timedelta(minutes=60)
-
-
-
 @app.route("/")
 def hello_pm1():
-
     # 1. Validar expiración de sesión
     if not check_session_timeout():
         flash("Su sesión ha expirado. Por favor, inicie sesión nuevamente.", "danger")
@@ -59,7 +10,7 @@ def hello_pm1():
     numero_control = session.get("numero_control")
     is_master = session.get("is_master", False)
 
-    if not username:
+    if not username or not numero_control:
         flash("Debe iniciar sesión.", "danger")
         return redirect(url_for("login"))
 
@@ -70,7 +21,7 @@ def hello_pm1():
     if is_master:
         pdfs = load_all_pdfs(session_db)
     else:
-        pdfs = load_user_pdfs(session_db, session['numero_control'])
+        pdfs = load_user_pdfs(session_db, numero_control)  # <-- use variable
 
     # 5. Renderizar home.html con las variables necesarias
     return render_template(
@@ -81,7 +32,6 @@ def hello_pm1():
         numero_control=numero_control,
         pdfs=pdfs
     )
-
 
 
 
