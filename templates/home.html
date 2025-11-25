@@ -162,9 +162,7 @@
 
 
         {% if es_profesor %}
-        <a  href="{{ url_for('enviaractividad') }}">
-              <button type="submit" class="btn btn-warning">Hacer un registro</button>
-        </a>
+        <a href="{{ url_for('enviaractividad') }}" class="btn btn-warning">Hacer un registro</a>
         {% endif %}
 
         {% if is_master %}
