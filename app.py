@@ -75,11 +75,11 @@ def hello_pm1():
     # 5. Renderizar home.html con las variables necesarias
     return render_template(
         "home.html",
-        es_profesor=True,       # si lo necesitas
-        is_master=is_master,    # ✔ para el HTML
+        es_profesor=True,
+        is_master=is_master,
         username=username,
-        numero_control,
-        pdfs=pdfs               # ✔ lista de PDFs
+        numero_control=numero_control,
+        pdfs=pdfs
     )
 
 
