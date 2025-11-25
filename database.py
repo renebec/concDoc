@@ -160,10 +160,9 @@ def load_user_pdfs(session_db, numero_control):
         FROM actividades
         WHERE numero_control = :numero_control
         ORDER BY created_at DESC
-        """
-    )
-    result = session_db.execute(query, {"numero_control": numero_control})
-    return result.mappings().all()
+    """)
+    return session_db.execute(query, {"numero_control": numero_control}).mappings().all()
+
 
 
 def insert_plan(
