@@ -164,6 +164,21 @@ def load_user_pdfs(session_db, numero_control):
     return session_db.execute(query, {"numero_control": numero_control}).mappings().all()
 
 
+def load_all_pdfs(session_db):
+    query = text("""
+        SELECT 
+            pdf_url,
+            created_at,
+            numero_control,
+            apellido_paterno,
+            apellido_materno,
+            nombres
+        FROM actividades
+        ORDER BY created_at DESC
+    """)
+    return session_db.execute(query).mappings().all()
+
+
 
 def insert_plan(
     session, plan, docenteID, cve,
