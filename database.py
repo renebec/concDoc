@@ -111,7 +111,7 @@ def insert_actividad(session, numero_control, plantel, apellido_paterno, apellid
     created_at = datetime.now(pytz.timezone("America/Mexico_City"))
     try:
             query = text("""
-                INSERT INTO registros (
+                INSERT INTO actividades (
                     numero_control,
                     plantel,
                     apellido_paterno,
@@ -159,7 +159,7 @@ def insert_actividad(session, numero_control, plantel, apellido_paterno, apellid
 def load_all_pdfs(session_db):
     query = text("""
         SELECT pdf_url, created_at, numero_control
-        FROM registros
+        FROM actividades
         ORDER BY created_at DESC, numero_control DESC
     """)
     result = session_db.execute(query).mappings().all()  # <-- mapeo
