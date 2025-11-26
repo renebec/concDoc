@@ -19,16 +19,30 @@ from sqlalchemy import text
 
 created_at = datetime.now()
 
+import time
+
 def check_session_timeout():
-    if 'username' in session:
-        if 'last_activity' in session:
-            last_activity = datetime.fromisoformat(session['last_activity'])
-            if datetime.now() - last_activity > timedelta(minutes=60):
-                session.clear()
-                return False
-        session['last_activity'] = datetime.now().isoformat()
-        return True
-    return False
+    last = session.get('last_activity')
+    if not last:
+        return False
+
+    now = time.time()
+    timeout_seconds = 60 * 60  # 60 minutes
+
+    # If last_activity is not a float (old ISO string), reset session
+    try:
+        last = float(last)
+    except:
+        session.clear()
+        return False
+
+    if now - last > timeout_seconds:
+        session.clear()
+        return False
+
+    # Refresh timestamp
+    session['last_activity'] = time.time()
+    return True
 
 """
 cloudinary.config( 
@@ -563,7 +577,8 @@ def login():
 
                     flask_session.permanent = True
                     flask_session['username'] = username
-                    flask_session['last_activity'] = datetime.now().isoformat()
+                    flask_session['numero_control'] = user['numero_control']   # <-- ADD THIS HERE
+                    flask_session['last_activity'] = time.time()
 
                     # ------ DETECTAR DOCENTE ------
                     school_id = user.get('numero_control', '')
