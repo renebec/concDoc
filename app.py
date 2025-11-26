@@ -648,22 +648,8 @@ def download_pdf(id):
 
 
 
-
 @app.route('/logout')
 def logout():
-
-    session.pop('username', None)
-
+    session.clear()  # removes everything from session
+    flash("Has cerrado sesión correctamente.", "success")
     return redirect(url_for('login'))
-
-
-
-"""
-if __name__ == '__main__':
-    app.run(debug=True)
-"""
-
-
-if __name__ == '__main__':
-    http_server = WSGIServer(('0.0.0.0', 8080), app)
-    http_server.serve_forever()
