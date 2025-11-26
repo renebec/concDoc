@@ -64,16 +64,26 @@ def hello_pm1():
     # 3. Conexión a DB
     session_db = get_db_session()
 
-    # 4. Cargar PDFs dependiendo del tipo de usuario
-    if is_master:
-        pdfs = load_all_pdfs(session_db)
-    else:
-        pdfs = load_user_pdfs(session_db, numero_control)  # <-- use variable
+    try:
+        # 4. Cargar PDFs según el tipo de usuario
+        if is_master:
+            pdfs = load_all_pdfs(session_db)
+            es_profesor = True
+        else:
+            pdfs = load_user_pdfs(session_db, numero_control)
+            es_profesor = False
 
-    # 5. Renderizar home.html con las variables necesarias
+    except Exception as e:
+        print("❌ Error al cargar PDFs:", e)
+        flash("Error al cargar los archivos.", "danger")
+        pdfs = []
+    finally:
+        session_db.close()
+
+    # 5. Renderizar plantilla
     return render_template(
         "home.html",
-        es_profesor=True,
+        es_profesor=es_profesor,
         is_master=is_master,
         username=username,
         numero_control=numero_control,
@@ -139,6 +149,10 @@ from sqlalchemy import text
 from datetime import datetime
 import pytz
 import cloudinary.uploader
+
+
+
+
 
 @app.route("/enviaractividad", methods=["GET", "POST"])
 def enviaractividad():
