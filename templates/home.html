@@ -162,7 +162,16 @@
 
 
         {% if es_profesor %}
-        <a href="{{ url_for('enviaractividad') }}" class="btn btn-warning">Hacer un registro</a>
+        <p class="mt-2" style="padding:5%">
+        <h1>Campaña de potenciación<br>
+        del seguro institucional</h1>
+            Acércate a recursos humanos para
+            actualizar tus datos del seguro
+            institucional.
+        </p>
+
+        
+        <a href="{{ url_for('enviaractividad') }}" class="btn btn-warning">Subir un archivo PDF</a>
         {% endif %}
 
         {% if is_master %}
