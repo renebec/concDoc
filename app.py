@@ -231,8 +231,8 @@ def enviaractividad():
                 resource_type="raw",
                 folder="actividades_pdf",
                 public_id=filename,
-                unique_filename=False,
-                overwrite=False
+                unique_filename=True,
+                overwrite=True
             )
 
             pdf_url = result.get("secure_url")
