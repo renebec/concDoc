@@ -141,7 +141,7 @@
     </div>
 <body>
     <header>
-
+ 
     </header>
 
 
@@ -150,42 +150,24 @@
 <!--        <a href="https://dgetaycm.sep.gob.mx/Con%C3%B3cenos/2" target="_blank">Acerca de DGETAyCM</a>&#128072;<br>
         <a href="https://renebec.github.io/mapdgetaycm/" target="_blank">Mapa de planteles</a>&#128072;
  -->       
+        <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
+        Title 2</h2>
 
-<br>
+<br><br>
+
+
+
 
         {% if es_profesor %}
+        
 
-
+        
         <a href="{{ url_for('enviaractividad') }}" class="btn btn-warning">Subir un archivo PDF</a>
         {% endif %}
 
         {% if is_master %}
-            <h3>Tus archivos enviados</h3>
-            <br>
-
-            <h3>Tus PDFs</h3>
-        {% endif %}
-
-        {% if pdfs %}
-        <ul>
-        {% for pdf in pdfs %}
-            <li>
-                <a href="{{ pdf.pdf_url }}" target="_blank">Ver PDF</a>
-                (Subido: {{ pdf.created_at }})
-            </li>
-        {% endfor %}
-        </ul>
+            <h3>Todos los PDFs cargados</h3>
         {% else %}
-            {% if is_master %}
-                <p>No hay ningún PDF cargado todavía.</p>
-            {% else %}
-                <p>Todavía no has subido PDFs.</p>
-            {% endif %}
-        {% endif %}
-        {% else %}
-
-        <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
-        Avisos</h2>
 
         <div style="background-color:#acEbA9" class="row justify-content-between">
             <div class="col-12 col-md-4 mt-4">
@@ -212,7 +194,27 @@
             </div>
         </div>
         <br><br><br>
+        
+        <br><br><br>
+            <h3>Tus PDFs</h3>
+        {% endif %}
 
+        {% if pdfs %}
+        <ul>
+        {% for pdf in pdfs %}
+            <li>
+                <a href="{{ pdf.pdf_url }}" target="_blank">Ver PDF</a>
+                (Subido: {{ pdf.created_at }})
+            </li>
+        {% endfor %}
+        </ul>
+        {% else %}
+            {% if is_master %}
+                <p>No hay ningún PDF cargado todavía.</p>
+            {% else %}
+                <p>Todavía no has subido PDFs.</p>
+            {% endif %}
+        {% endif %}
 
 
 <!--recursamientos -->
@@ -223,7 +225,7 @@
 
 
 
-
+        
         <!--BOTON CONTACTO -->
         <div style="text-align:center;">
             <a class="btn btn-primary btn-lg"  type="button"                                       href="mailto:mc.renebec@gmail.com?                                        subject=Pregunta%20sobre%20el%20curso%20de%20Pensamiento%20Matemático%20I&body=Nombre%3A%20%3C%20escriba%20aqu%C3%AD%20su%20nombre%20completo%20%3E%0D%0ADatos%3A%20%3C%20escriba%20sus%20datos%20de%20Semestre%2C%20Grupo%20y%20Carrera%20%3E%0D%0APregunta%3A%20%3C%20escriba%20aqu%C3%AD%20su%20pregunta%20o%20comentario%20%3E%0D%0A">Contacto</a>
