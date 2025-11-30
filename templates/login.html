@@ -355,13 +355,19 @@
           Consulta nuestro datos climatológicos registrados cada media hora.
 
             <div class="row justify-content-between">
-        <div class="col-12 col-md-6">
-          <iframe class="embed-responsive-item" style="width:450px;height:280px;border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2842388/charts/3?bgcolor=%23FFC300&color=%23d62020&dynamic=true&results=300&round=2&timescale=30&title=Temperatura+%C2%B0C&type=line&xaxis=Fecha+y+hora&yaxis=Temperatura"></iframe>
+        <div class="col-12 col-md-5">
+          <div class="iframe-wrapper" style="position: relative; padding-top: 56.25%; /* 16:9 ratio */">
+            <iframe src="https://thingspeak.com/channels/2842388/charts/3?bgcolor=%23FFC300&color=%23d62020&dynamic=true&results=300&round=2&timescale=30&title=Temperatura+%C2%B0C&type=line&xaxis=Fecha+y+hora&yaxis=Temperatura" style="position: absolute; top:0; left:0; width:100%; height:100%; border:0;"></iframe>
+          </div>	
         </div>
-        <div class="col-12 col-md-6">
-          <iframe class="embed-responsive-item"  style="width:450px;height:280px;border: 1px solid #cccccc;" src="https://thingspeak.com/channels/2842388/charts/4?bgcolor=%23DAF7A6&color=%23d62020&dynamic=true&results=300&round=2&timescale=30&title=%25+Humedad+del+aire&type=line&xaxis=Fecha+y+hora&yaxis=Humedad"></iframe>
+        <div class="col-12 col-md-5">
+          <div class="iframe-wrapper" style="position: relative; padding-top: 56.25%; /* 16:9 ratio */">
+            <iframe src="https://thingspeak.com/channels/2842388/charts/4?bgcolor=%23DAF7A6&color=%23d62020&dynamic=true&results=300&round=2&timescale=30&title=%25+Humedad+del+aire&type=line&xaxis=Fecha+y+hora&yaxis=Humedad" style="position: absolute; top:0; left:0; width:100%; height:100%; border:0;"></iframe>
+          </div>	
         </div>
       </div>
+
+
 
 
 
