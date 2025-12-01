@@ -51,7 +51,7 @@ def is_preregistered(numero_control):
 def load_pg_from_db():
     try:
       with engine.connect() as conn:
-          result = conn.execute(text("SELECT * FROM mat1"))
+          result = conn.execute(text("SELECT * FROM users2"))
           pg = result.mappings().all()
           return pg
     except Exception as e:
@@ -107,7 +107,7 @@ def load_pgn_from_db(id):
 
 
 # Insert a new actividad record
-def insert_actividad(session, numero_control, plantel, apellido_paterno, apellido_materno, nombres, claveOut, claveIn, pdf_url, created_at):
+def insert_actividad(session, numero_control, plantel, apellido_paterno, apellido_materno, nombres, info, claveIn, pdf_url, created_at):
     created_at = datetime.now(pytz.timezone("America/Mexico_City"))
     try:
             query = text("""
@@ -117,7 +117,7 @@ def insert_actividad(session, numero_control, plantel, apellido_paterno, apellid
                     apellido_paterno,
                     apellido_materno,
                     nombres,
-                    claveOut,
+                    info,
                     claveIn,
                     pdf_url,
                     created_at
@@ -128,7 +128,7 @@ def insert_actividad(session, numero_control, plantel, apellido_paterno, apellid
                     :apellido_paterno,
                     :apellido_materno,
                     :nombres,
-                    :claveOut,
+                    :info,
                     :claveIn,
                     :pdf_url,
                     :created_at
@@ -140,7 +140,7 @@ def insert_actividad(session, numero_control, plantel, apellido_paterno, apellid
                 "apellido_paterno": apellido_paterno,
                 "apellido_materno": apellido_materno,
                 "nombres": nombres,
-                "claveOut": claveOut,
+                "info": info,
                 "claveIn": claveIn,
                 "pdf_url": pdf_url,
                 "created_at": created_at
@@ -178,6 +178,17 @@ def load_user_pdfs(session_db, numero_control):
     result = session_db.execute(query, {"numero_control": numero_control}).mappings().all()
     pdfs = result
     return pdfs
+
+
+def load_user_info(session_db, numero_control):
+    query = text("""
+        SELECT info
+        FROM users2
+        WHERE numero_control = :numero_control
+        LIMIT 1
+    """)
+    row = session_db.execute(query, {"numero_control": numero_control}).mappings().first()
+    return row["info"] if row else None
 
 
 

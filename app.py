@@ -13,7 +13,7 @@ from weasyprint import HTML, CSS
 import pymysql
 from werkzeug.utils import secure_filename
 
-from database import load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2, is_preregistered, load_all_pdfs, load_user_pdfs
+from database import load_pgn_from_db,  register_user, get_db_session, insert_actividad, load_plan_from_db, insert_plan,  load_pg_from_db2, is_preregistered, load_all_pdfs, load_user_pdfs, load_user_info
 
 from sqlalchemy import text
 
@@ -69,6 +69,7 @@ def hello_pm1():
     # 2. Obtener datos del usuario desde session
     username = session.get("username")
     numero_control = session.get("numero_control")
+    user_info = load_user_info(session_db, numero_control)
     is_master = session.get("is_master", False)
 
     if not username or not numero_control:
@@ -101,7 +102,8 @@ def hello_pm1():
         is_master=is_master,
         username=username,
         numero_control=numero_control,
-        pdfs=pdfs
+        pdfs=pdfs,
+        info=user_info
     )
 
 
