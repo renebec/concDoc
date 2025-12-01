@@ -66,6 +66,8 @@ def hello_pm1():
         flash("Su sesión ha expirado. Por favor, inicie sesión nuevamente.", "danger")
         return redirect(url_for("login"))
 
+    session_db = get_db_session()
+
     # 2. Obtener datos del usuario desde session
     username = session.get("username")
     numero_control = session.get("numero_control")
