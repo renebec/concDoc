@@ -71,6 +71,7 @@ def hello_pm1():
     numero_control = session.get("numero_control")
     user_info = load_user_info(session_db, numero_control)
     is_master = session.get("is_master", False)
+    user_info = load_user_info(session_db, numero_control)
 
     if not username or not numero_control:
         flash("Debe iniciar sesión.", "danger")
