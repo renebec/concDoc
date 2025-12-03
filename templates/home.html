@@ -200,30 +200,8 @@
                 </p>
             </div>
         </div>
-        
-        <br><br><br>
-            <h3>Tus PDFs</h3>
-        {% endif %}
 
-        {% if pdfs %}
-        <ul>
-        {% for pdf in pdfs %}
-            <li>
-                <a href="{{ pdf.pdf_url }}" target="_blank">Ver PDF</a>
-                (Subido: {{ pdf.created_at }})
-            </li>
-        {% endfor %}
-        </ul>
-        {% else %}
-            {% if is_master %}
-                <p>No hay ningún PDF cargado todavía.</p>
-            {% else %}
-                <p>Todavía no has subido PDFs.</p>
-            {% endif %}
-        {% endif %}
-
-
-<!--Material docentes -->
+        <!--Material docentes -->
         <div>
               <h1>Material para docentes</h1>
               <div class="row justify-content-between">
@@ -275,6 +253,37 @@
                   </div>
                 </div>
               </div>
+
+
+
+
+
+
+        <!-- PDF's -->
+        
+        <br><br><br>
+            <h3>Tus PDFs</h3>
+        {% endif %}
+
+        {% if pdfs %}
+        <ul>
+        {% for pdf in pdfs %}
+            <li>
+                <a href="{{ pdf.pdf_url }}" target="_blank">Ver PDF</a>
+                (Subido: {{ pdf.created_at }})
+            </li>
+        {% endfor %}
+        </ul>
+        {% else %}
+            {% if is_master %}
+                <p>No hay ningún PDF cargado todavía.</p>
+            {% else %}
+                <p>Todavía no has subido PDFs.</p>
+            {% endif %}
+        {% endif %}
+
+
+
 
 
 
