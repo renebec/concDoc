@@ -141,7 +141,7 @@
     </div>
 <body>
     <header>
- 
+
     </header>
 
 
@@ -155,7 +155,7 @@
         {% endif %}
 <!--        <a href="https://dgetaycm.sep.gob.mx/Con%C3%B3cenos/2" target="_blank">Acerca de DGETAyCM</a>&#128072;<br>
         <a href="https://renebec.github.io/mapdgetaycm/" target="_blank">Mapa de planteles</a>&#128072;
-        
+
  -->       
         <h2 class="text-center mt-4 mb-2" style="color:rgb(100,100,100);">
         Avisos</h2>
@@ -166,9 +166,9 @@
 
 
         {% if es_profesor %}
-        
 
-        
+
+
         <a href="{{ url_for('enviaractividad') }}" class="btn btn-warning">Subir un archivo PDF</a>
         {% endif %}
 
@@ -255,11 +255,24 @@
                       </div>
                     </a>
                   </div>
+
+                    <div class="col-12 col-md-3">
+                        <h2>Planes y programas</h2>
+                        <ul>
+                        <li><a href="https://cosfac.sems.gob.mx/Programas_presenciales/2023/PROGRAMA_DE_ESTUDIOS_AGROPECUARIO.pdf" target="_blank">
+                              Técnico Agropecuario</a></li>
+
+                         <li><a href="https://cosfac.sems.gob.mx/Programas_presenciales/2024/ADMINISTRACION_EMPRENDIMIENTOS1.pdf" target="_blank">
+                              Administración de emprendimientos</a></li>
+                             <li><a href="https://cosfac.sems.gob.mx/Programas_presenciales/2025/SOPORTE_Y_GESTION_DE_TECNOLOGIAS_INFORMATICAS.pdf" target="_blank">
+                              Soporte y Gestión de Tecnologías Informáticas
+                              </a></li>
+                         </ul>
+                    </div>
+
+
                 </div>
               </div>
-
-
-
 
 
 
@@ -287,16 +300,13 @@
         {% endif %}
         -->
 
+        <br><br>
+
+        <hr>
 
 
 
 
-
-
-
-
-
-        
         <!--BOTON CONTACTO -->
         <div style="text-align:center;">
             <a class="btn btn-primary btn-lg"  type="button"                                       href="mailto:ags.cbta205.depacadycomp@dgetaycm.sems.gob.mx?cc=ags.cbta205.subacad@dgetaycm.sems.gob.mx&bcc=ags.cbta205.direccion@dgetaycm.sems.gob.mx&subject=Consulta&body=Nombre%20y%20apellidos%3A%0APregunta%20o%20comentario%3A">Contacto</a>
