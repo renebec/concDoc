@@ -115,12 +115,7 @@
             <a href="{{ url_for('logout') }}" class="btn btn-danger btn-sm col-5" id="btnCerrar">Cerrar Sesión</a>
         </nav>
 
-
-
         <img class="mt-5" id="banner" src= "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExczVjMG5xeXByZnAydHNsdWRuejBvdGltMms2aWkzdWg3czc1bm1nMyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/zqtOYPQZ8Kb5pMlH8p/giphy.gif">
-
-
-
 
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
@@ -162,10 +157,7 @@
 
 <br><br>
 
-
         {% if es_profesor %}
-
-
 
         <a href="{{ url_for('enviaractividad') }}" class="btn btn-warning">Subir un archivo PDF</a>
         {% endif %}
@@ -342,9 +334,6 @@
         <br><br>
 
         <hr>
-
-
-
 
         <!--BOTON CONTACTO -->
         <div style="text-align:center;">

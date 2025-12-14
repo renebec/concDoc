@@ -31,15 +31,15 @@
 
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
-                    <div class="alert alert-danger" id="flashMessage" role="alert">
-                        {{ messages[0] }}
-                    </div>
-                    <script>
+            <div class="alert alert-danger" id="flashMessage" role="alert">
+                    {{ messages[0] }}
+            </div>
+            <script>
                         // Hide the flash message after 5 seconds
                         setTimeout(function() {
                             document.getElementById("flashMessage").style.display = "none";
                         }, 3000);  // 5000 milliseconds = 5 seconds
-                    </script>
+            </script>
                 {% endif %}
             {% endwith %}
 
@@ -78,7 +78,7 @@
             <div class="mb-3 row g-3">
                   <div class="col-sm-4">
                   <label for="plantel" class="form-label" style="font-weight:bold;">Plantel</label>
-                    <select type="text" class="form-select" name="plantel" required>
+                  <select type="text" class="form-select" name="plantel" required>
                       <option selected>Seleccione...</option>
                       <option value="CBTA 30">CBTA 30</option>
                       <option value="CBTA 40">CBTA 40</option>
@@ -111,12 +111,14 @@
                       <option value="E4327">E4327</option>
                       <option value="E4329">E4329</option>
                     </select>
-                    </div>-->
+                    </div>
+                -->
+        </form>
             
 
 
 
-            <button type="submit" class="btn btn-success">Registrarse</button>
+        <button type="submit" class="btn btn-success">Registrarse</button>
 
         <br>
         <a href="{{ url_for('login') }}">¿Ya tienes cuenta? Inicia sesión aquí</a>
