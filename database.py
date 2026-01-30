@@ -118,7 +118,6 @@ def insert_actividad(session, numero_control, plantel, apellido_paterno, apellid
                     apellido_materno,
                     nombres,
                     info,
-                    claveIn,
                     pdf_url,
                     created_at
                 )
@@ -129,7 +128,6 @@ def insert_actividad(session, numero_control, plantel, apellido_paterno, apellid
                     :apellido_materno,
                     :nombres,
                     :info,
-                    :claveIn,
                     :pdf_url,
                     :created_at
                 )
@@ -141,7 +139,6 @@ def insert_actividad(session, numero_control, plantel, apellido_paterno, apellid
                 "apellido_materno": apellido_materno,
                 "nombres": nombres,
                 "info": info,
-                "claveIn": claveIn,
                 "pdf_url": pdf_url,
                 "created_at": created_at
             })
